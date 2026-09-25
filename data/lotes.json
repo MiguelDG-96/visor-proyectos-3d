@@ -1,0 +1,1972 @@
+{
+  "proyecto": {
+    "nombre": "Urbanizacion Lluyllucucha",
+    "nombre_comercial": "Urbanización Lluyllucucha",
+    "tipo": "Habilitacion Urbana - Lotizacion",
+    "empresa": "Tech & Science",
+    "ubicacion": "Lluyllucucha, Peru",
+    "moneda": "PEN",
+    "version_datos": "1.0.0",
+    "fecha_actualizacion": "2026-09-25",
+    "coordenadas_referencia": {
+      "nota": "Coordenadas GPS pendientes - requiere levantamiento topografico o DXF georeferenciado",
+      "sistema": null,
+      "latitud": null,
+      "longitud": null
+    },
+    "estadisticas": {
+      "total_lotes": 74,
+      "disponibles": 54,
+      "reservados": 16,
+      "vendidos": 4,
+      "area_total_lotes_m2": 10014.86,
+      "valor_total_disponibles_soles": 2913500,
+      "areas_publicas": {
+        "recreacion_m2": 1444.82,
+        "educacion_m2": 691.81,
+        "otros_usos_m2": 626.08
+      }
+    }
+  },
+  "calles": [
+    {
+      "nombre": "Jr. San Francisco",
+      "tipo": "jiron",
+      "seccion_vial": "A-A",
+      "ancho_total_m": 12.6
+    },
+    {
+      "nombre": "Av. Antonio Raimondi",
+      "tipo": "avenida",
+      "seccion_vial": "B-B",
+      "ancho_total_m": 9.6
+    },
+    {
+      "nombre": "Jiron Mariano Melgar",
+      "tipo": "jiron",
+      "seccion_vial": "B-B",
+      "ancho_total_m": 9.6
+    },
+    {
+      "nombre": "Jiron Julio C. Tello",
+      "tipo": "jiron",
+      "seccion_vial": "B-B",
+      "ancho_total_m": 9.6
+    },
+    {
+      "nombre": "Pasaje Francisco Valles",
+      "tipo": "pasaje",
+      "seccion_vial": "C-C",
+      "ancho_total_m": 7.6
+    }
+  ],
+  "estados_config": {
+    "disponible": {
+      "color": "#22c55e",
+      "color_hover": "#16a34a",
+      "label": "Disponible"
+    },
+    "reservado": {
+      "color": "#f59e0b",
+      "color_hover": "#d97706",
+      "label": "Reservado"
+    },
+    "vendido": {
+      "color": "#ef4444",
+      "color_hover": "#dc2626",
+      "label": "Vendido"
+    }
+  },
+  "manzanas": [
+    {
+      "id": "MZ-A",
+      "nombre": "Manzana A",
+      "total_lotes": 22,
+      "lotes": [
+        {
+          "id": 1,
+          "codigo": "MZA-L-01",
+          "manzana": "Mz-A",
+          "numero": 1,
+          "area_m2": 175.38,
+          "perimetro_m": 57.54,
+          "frente_m": 8.77,
+          "fondo_m": 20.0,
+          "precio_soles": 61000,
+          "precio_m2": 347.82,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi",
+            "Jiron Julio C. Tello"
+          ],
+          "es_esquina": true,
+          "es_irregular": true,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 1 de Manzana A, 175.38 m², frente 8.77m x fondo 20.0m"
+        },
+        {
+          "id": 2,
+          "codigo": "MZA-L-02",
+          "manzana": "Mz-A",
+          "numero": 2,
+          "area_m2": 172.31,
+          "perimetro_m": 57.24,
+          "frente_m": 8.62,
+          "fondo_m": 20.0,
+          "precio_soles": 61000,
+          "precio_m2": 354.01,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi",
+            "Jiron Julio C. Tello"
+          ],
+          "es_esquina": false,
+          "es_irregular": true,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 2 de Manzana A, 172.31 m², frente 8.62m x fondo 20.0m"
+        },
+        {
+          "id": 3,
+          "codigo": "MZA-L-03",
+          "manzana": "Mz-A",
+          "numero": 3,
+          "area_m2": 169.25,
+          "perimetro_m": 56.92,
+          "frente_m": 8.46,
+          "fondo_m": 20.0,
+          "precio_soles": 56500,
+          "precio_m2": 333.83,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi",
+            "Jiron Julio C. Tello"
+          ],
+          "es_esquina": false,
+          "es_irregular": true,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 3 de Manzana A, 169.25 m², frente 8.46m x fondo 20.0m"
+        },
+        {
+          "id": 4,
+          "codigo": "MZA-L-04",
+          "manzana": "Mz-A",
+          "numero": 4,
+          "area_m2": 166.19,
+          "perimetro_m": 56.62,
+          "frente_m": 8.31,
+          "fondo_m": 20.0,
+          "precio_soles": 55000,
+          "precio_m2": 330.95,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": true,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 4 de Manzana A, 166.19 m², frente 8.31m x fondo 20.0m"
+        },
+        {
+          "id": 5,
+          "codigo": "MZA-L-05",
+          "manzana": "Mz-A",
+          "numero": 5,
+          "area_m2": 163.13,
+          "perimetro_m": 56.32,
+          "frente_m": 8.16,
+          "fondo_m": 20.0,
+          "precio_soles": 58000,
+          "precio_m2": 355.54,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": true,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 5 de Manzana A, 163.13 m², frente 8.16m x fondo 20.0m"
+        },
+        {
+          "id": 6,
+          "codigo": "MZA-L-06",
+          "manzana": "Mz-A",
+          "numero": 6,
+          "area_m2": 160.06,
+          "perimetro_m": 56.0,
+          "frente_m": 8.0,
+          "fondo_m": 20.0,
+          "precio_soles": 57000,
+          "precio_m2": 356.12,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": true,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 6 de Manzana A, 160.06 m², frente 8.0m x fondo 20.0m"
+        },
+        {
+          "id": 7,
+          "codigo": "MZA-L-07",
+          "manzana": "Mz-A",
+          "numero": 7,
+          "area_m2": 157.0,
+          "perimetro_m": 55.7,
+          "frente_m": 7.85,
+          "fondo_m": 20.0,
+          "precio_soles": 54000,
+          "precio_m2": 343.95,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": true,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 7 de Manzana A, 157.0 m², frente 7.85m x fondo 20.0m"
+        },
+        {
+          "id": 8,
+          "codigo": "MZA-L-08",
+          "manzana": "Mz-A",
+          "numero": 8,
+          "area_m2": 153.94,
+          "perimetro_m": 55.4,
+          "frente_m": 7.7,
+          "fondo_m": 20.0,
+          "precio_soles": 57000,
+          "precio_m2": 370.27,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": true,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 8 de Manzana A, 153.94 m², frente 7.7m x fondo 20.0m"
+        },
+        {
+          "id": 9,
+          "codigo": "MZA-L-09",
+          "manzana": "Mz-A",
+          "numero": 9,
+          "area_m2": 150.87,
+          "perimetro_m": 55.08,
+          "frente_m": 7.54,
+          "fondo_m": 20.0,
+          "precio_soles": 56500,
+          "precio_m2": 374.49,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": true,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 9 de Manzana A, 150.87 m², frente 7.54m x fondo 20.0m"
+        },
+        {
+          "id": 10,
+          "codigo": "MZA-L-10",
+          "manzana": "Mz-A",
+          "numero": 10,
+          "area_m2": 147.81,
+          "perimetro_m": 54.78,
+          "frente_m": 7.39,
+          "fondo_m": 20.0,
+          "precio_soles": 57000,
+          "precio_m2": 385.63,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": true,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 10 de Manzana A, 147.81 m², frente 7.39m x fondo 20.0m"
+        },
+        {
+          "id": 11,
+          "codigo": "MZA-L-11",
+          "manzana": "Mz-A",
+          "numero": 11,
+          "area_m2": 144.75,
+          "perimetro_m": 54.48,
+          "frente_m": 7.24,
+          "fondo_m": 20.0,
+          "precio_soles": 54500,
+          "precio_m2": 376.51,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": true,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 11 de Manzana A, 144.75 m², frente 7.24m x fondo 20.0m"
+        },
+        {
+          "id": 12,
+          "codigo": "MZA-L-12",
+          "manzana": "Mz-A",
+          "numero": 12,
+          "area_m2": 120.0,
+          "perimetro_m": 52.0,
+          "frente_m": 6.0,
+          "fondo_m": 20.0,
+          "precio_soles": 53000,
+          "precio_m2": 441.67,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": false,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 12 de Manzana A, 120.0 m², frente 6.0m x fondo 20.0m"
+        },
+        {
+          "id": 13,
+          "codigo": "MZA-L-13",
+          "manzana": "Mz-A",
+          "numero": 13,
+          "area_m2": 120.0,
+          "perimetro_m": 52.0,
+          "frente_m": 6.0,
+          "fondo_m": 20.0,
+          "precio_soles": 50000,
+          "precio_m2": 416.67,
+          "moneda": "PEN",
+          "estado": "reservado",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": false,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 13 de Manzana A, 120.0 m², frente 6.0m x fondo 20.0m"
+        },
+        {
+          "id": 14,
+          "codigo": "MZA-L-14",
+          "manzana": "Mz-A",
+          "numero": 14,
+          "area_m2": 120.0,
+          "perimetro_m": 52.0,
+          "frente_m": 6.0,
+          "fondo_m": 20.0,
+          "precio_soles": 50000,
+          "precio_m2": 416.67,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": false,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 14 de Manzana A, 120.0 m², frente 6.0m x fondo 20.0m"
+        },
+        {
+          "id": 15,
+          "codigo": "MZA-L-15",
+          "manzana": "Mz-A",
+          "numero": 15,
+          "area_m2": 120.0,
+          "perimetro_m": 52.0,
+          "frente_m": 6.0,
+          "fondo_m": 20.0,
+          "precio_soles": 51000,
+          "precio_m2": 425.0,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": false,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 15 de Manzana A, 120.0 m², frente 6.0m x fondo 20.0m"
+        },
+        {
+          "id": 16,
+          "codigo": "MZA-L-16",
+          "manzana": "Mz-A",
+          "numero": 16,
+          "area_m2": 120.0,
+          "perimetro_m": 52.0,
+          "frente_m": 6.0,
+          "fondo_m": 20.0,
+          "precio_soles": 50000,
+          "precio_m2": 416.67,
+          "moneda": "PEN",
+          "estado": "vendido",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": false,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 16 de Manzana A, 120.0 m², frente 6.0m x fondo 20.0m"
+        },
+        {
+          "id": 17,
+          "codigo": "MZA-L-17",
+          "manzana": "Mz-A",
+          "numero": 17,
+          "area_m2": 120.0,
+          "perimetro_m": 52.0,
+          "frente_m": 6.0,
+          "fondo_m": 20.0,
+          "precio_soles": 51000,
+          "precio_m2": 425.0,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": false,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 17 de Manzana A, 120.0 m², frente 6.0m x fondo 20.0m"
+        },
+        {
+          "id": 18,
+          "codigo": "MZA-L-18",
+          "manzana": "Mz-A",
+          "numero": 18,
+          "area_m2": 120.0,
+          "perimetro_m": 52.0,
+          "frente_m": 6.0,
+          "fondo_m": 20.0,
+          "precio_soles": 51500,
+          "precio_m2": 429.17,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": false,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 18 de Manzana A, 120.0 m², frente 6.0m x fondo 20.0m"
+        },
+        {
+          "id": 19,
+          "codigo": "MZA-L-19",
+          "manzana": "Mz-A",
+          "numero": 19,
+          "area_m2": 120.0,
+          "perimetro_m": 52.0,
+          "frente_m": 6.0,
+          "fondo_m": 20.0,
+          "precio_soles": 51000,
+          "precio_m2": 425.0,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": false,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 19 de Manzana A, 120.0 m², frente 6.0m x fondo 20.0m"
+        },
+        {
+          "id": 20,
+          "codigo": "MZA-L-20",
+          "manzana": "Mz-A",
+          "numero": 20,
+          "area_m2": 120.0,
+          "perimetro_m": 52.0,
+          "frente_m": 6.0,
+          "fondo_m": 20.0,
+          "precio_soles": 54500,
+          "precio_m2": 454.17,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": false,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 20 de Manzana A, 120.0 m², frente 6.0m x fondo 20.0m"
+        },
+        {
+          "id": 21,
+          "codigo": "MZA-L-21",
+          "manzana": "Mz-A",
+          "numero": 21,
+          "area_m2": 120.0,
+          "perimetro_m": 52.0,
+          "frente_m": 6.0,
+          "fondo_m": 20.0,
+          "precio_soles": 52000,
+          "precio_m2": 433.33,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": false,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 21 de Manzana A, 120.0 m², frente 6.0m x fondo 20.0m"
+        },
+        {
+          "id": 22,
+          "codigo": "MZA-L-22",
+          "manzana": "Mz-A",
+          "numero": 22,
+          "area_m2": 120.0,
+          "perimetro_m": 52.0,
+          "frente_m": 6.0,
+          "fondo_m": 20.0,
+          "precio_soles": 51500,
+          "precio_m2": 429.17,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": true,
+          "es_irregular": false,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 22 de Manzana A, 120.0 m², frente 6.0m x fondo 20.0m"
+        }
+      ]
+    },
+    {
+      "id": "MZ-B",
+      "nombre": "Manzana B",
+      "total_lotes": 18,
+      "lotes": [
+        {
+          "id": 23,
+          "codigo": "MZB-L-01",
+          "manzana": "Mz-B",
+          "numero": 1,
+          "area_m2": 140.36,
+          "perimetro_m": 54.04,
+          "frente_m": 7.02,
+          "fondo_m": 20.0,
+          "precio_soles": 53000,
+          "precio_m2": 377.6,
+          "moneda": "PEN",
+          "estado": "reservado",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi",
+            "Jiron Mariano Melgar"
+          ],
+          "es_esquina": true,
+          "es_irregular": true,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 1 de Manzana B, 140.36 m², frente 7.02m x fondo 20.0m"
+        },
+        {
+          "id": 24,
+          "codigo": "MZB-L-02",
+          "manzana": "Mz-B",
+          "numero": 2,
+          "area_m2": 138.63,
+          "perimetro_m": 53.86,
+          "frente_m": 6.93,
+          "fondo_m": 20.0,
+          "precio_soles": 55500,
+          "precio_m2": 400.35,
+          "moneda": "PEN",
+          "estado": "reservado",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi",
+            "Jiron Mariano Melgar"
+          ],
+          "es_esquina": false,
+          "es_irregular": true,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 2 de Manzana B, 138.63 m², frente 6.93m x fondo 20.0m"
+        },
+        {
+          "id": 25,
+          "codigo": "MZB-L-03",
+          "manzana": "Mz-B",
+          "numero": 3,
+          "area_m2": 136.89,
+          "perimetro_m": 53.68,
+          "frente_m": 6.84,
+          "fondo_m": 20.0,
+          "precio_soles": 53000,
+          "precio_m2": 387.17,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi",
+            "Jiron Mariano Melgar"
+          ],
+          "es_esquina": false,
+          "es_irregular": true,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 3 de Manzana B, 136.89 m², frente 6.84m x fondo 20.0m"
+        },
+        {
+          "id": 26,
+          "codigo": "MZB-L-04",
+          "manzana": "Mz-B",
+          "numero": 4,
+          "area_m2": 135.16,
+          "perimetro_m": 53.52,
+          "frente_m": 6.76,
+          "fondo_m": 20.0,
+          "precio_soles": 56000,
+          "precio_m2": 414.32,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": true,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 4 de Manzana B, 135.16 m², frente 6.76m x fondo 20.0m"
+        },
+        {
+          "id": 27,
+          "codigo": "MZB-L-05",
+          "manzana": "Mz-B",
+          "numero": 5,
+          "area_m2": 133.43,
+          "perimetro_m": 53.34,
+          "frente_m": 6.67,
+          "fondo_m": 20.0,
+          "precio_soles": 55000,
+          "precio_m2": 412.2,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": true,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 5 de Manzana B, 133.43 m², frente 6.67m x fondo 20.0m"
+        },
+        {
+          "id": 28,
+          "codigo": "MZB-L-06",
+          "manzana": "Mz-B",
+          "numero": 6,
+          "area_m2": 131.7,
+          "perimetro_m": 53.16,
+          "frente_m": 6.58,
+          "fondo_m": 20.0,
+          "precio_soles": 52000,
+          "precio_m2": 394.84,
+          "moneda": "PEN",
+          "estado": "vendido",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": true,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 6 de Manzana B, 131.7 m², frente 6.58m x fondo 20.0m"
+        },
+        {
+          "id": 29,
+          "codigo": "MZB-L-07",
+          "manzana": "Mz-B",
+          "numero": 7,
+          "area_m2": 129.97,
+          "perimetro_m": 53.0,
+          "frente_m": 6.5,
+          "fondo_m": 20.0,
+          "precio_soles": 51500,
+          "precio_m2": 396.25,
+          "moneda": "PEN",
+          "estado": "reservado",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": true,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 7 de Manzana B, 129.97 m², frente 6.5m x fondo 20.0m"
+        },
+        {
+          "id": 30,
+          "codigo": "MZB-L-08",
+          "manzana": "Mz-B",
+          "numero": 8,
+          "area_m2": 260.16,
+          "perimetro_m": 66.02,
+          "frente_m": 13.01,
+          "fondo_m": 20.0,
+          "precio_soles": 70000,
+          "precio_m2": 269.07,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": true,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 8 de Manzana B, 260.16 m², frente 13.01m x fondo 20.0m"
+        },
+        {
+          "id": 31,
+          "codigo": "MZB-L-09",
+          "manzana": "Mz-B",
+          "numero": 9,
+          "area_m2": 169.54,
+          "perimetro_m": 56.96,
+          "frente_m": 8.48,
+          "fondo_m": 20.0,
+          "precio_soles": 60000,
+          "precio_m2": 353.9,
+          "moneda": "PEN",
+          "estado": "reservado",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": true,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 9 de Manzana B, 169.54 m², frente 8.48m x fondo 20.0m"
+        },
+        {
+          "id": 32,
+          "codigo": "MZB-L-10",
+          "manzana": "Mz-B",
+          "numero": 10,
+          "area_m2": 179.41,
+          "perimetro_m": 57.94,
+          "frente_m": 8.97,
+          "fondo_m": 20.0,
+          "precio_soles": 57500,
+          "precio_m2": 320.49,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": true,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 10 de Manzana B, 179.41 m², frente 8.97m x fondo 20.0m"
+        },
+        {
+          "id": 33,
+          "codigo": "MZB-L-11",
+          "manzana": "Mz-B",
+          "numero": 11,
+          "area_m2": 120.0,
+          "perimetro_m": 52.0,
+          "frente_m": 6.0,
+          "fondo_m": 20.0,
+          "precio_soles": 50000,
+          "precio_m2": 416.67,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": false,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 11 de Manzana B, 120.0 m², frente 6.0m x fondo 20.0m"
+        },
+        {
+          "id": 34,
+          "codigo": "MZB-L-12",
+          "manzana": "Mz-B",
+          "numero": 12,
+          "area_m2": 120.0,
+          "perimetro_m": 52.0,
+          "frente_m": 6.0,
+          "fondo_m": 20.0,
+          "precio_soles": 54000,
+          "precio_m2": 450.0,
+          "moneda": "PEN",
+          "estado": "vendido",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": false,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 12 de Manzana B, 120.0 m², frente 6.0m x fondo 20.0m"
+        },
+        {
+          "id": 35,
+          "codigo": "MZB-L-13",
+          "manzana": "Mz-B",
+          "numero": 13,
+          "area_m2": 120.0,
+          "perimetro_m": 52.0,
+          "frente_m": 6.0,
+          "fondo_m": 20.0,
+          "precio_soles": 53500,
+          "precio_m2": 445.83,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": false,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 13 de Manzana B, 120.0 m², frente 6.0m x fondo 20.0m"
+        },
+        {
+          "id": 36,
+          "codigo": "MZB-L-14",
+          "manzana": "Mz-B",
+          "numero": 14,
+          "area_m2": 120.0,
+          "perimetro_m": 52.0,
+          "frente_m": 6.0,
+          "fondo_m": 20.0,
+          "precio_soles": 53500,
+          "precio_m2": 445.83,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": false,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 14 de Manzana B, 120.0 m², frente 6.0m x fondo 20.0m"
+        },
+        {
+          "id": 37,
+          "codigo": "MZB-L-15",
+          "manzana": "Mz-B",
+          "numero": 15,
+          "area_m2": 120.0,
+          "perimetro_m": 52.0,
+          "frente_m": 6.0,
+          "fondo_m": 20.0,
+          "precio_soles": 54000,
+          "precio_m2": 450.0,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": false,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 15 de Manzana B, 120.0 m², frente 6.0m x fondo 20.0m"
+        },
+        {
+          "id": 38,
+          "codigo": "MZB-L-16",
+          "manzana": "Mz-B",
+          "numero": 16,
+          "area_m2": 120.0,
+          "perimetro_m": 52.0,
+          "frente_m": 6.0,
+          "fondo_m": 20.0,
+          "precio_soles": 52000,
+          "precio_m2": 433.33,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": false,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 16 de Manzana B, 120.0 m², frente 6.0m x fondo 20.0m"
+        },
+        {
+          "id": 39,
+          "codigo": "MZB-L-17",
+          "manzana": "Mz-B",
+          "numero": 17,
+          "area_m2": 120.0,
+          "perimetro_m": 52.0,
+          "frente_m": 6.0,
+          "fondo_m": 20.0,
+          "precio_soles": 53500,
+          "precio_m2": 445.83,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": false,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 17 de Manzana B, 120.0 m², frente 6.0m x fondo 20.0m"
+        },
+        {
+          "id": 40,
+          "codigo": "MZB-L-18",
+          "manzana": "Mz-B",
+          "numero": 18,
+          "area_m2": 120.0,
+          "perimetro_m": 52.0,
+          "frente_m": 6.0,
+          "fondo_m": 20.0,
+          "precio_soles": 50000,
+          "precio_m2": 416.67,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": true,
+          "es_irregular": false,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 18 de Manzana B, 120.0 m², frente 6.0m x fondo 20.0m"
+        }
+      ]
+    },
+    {
+      "id": "MZ-C",
+      "nombre": "Manzana C",
+      "total_lotes": 23,
+      "lotes": [
+        {
+          "id": 41,
+          "codigo": "MZC-L-01",
+          "manzana": "Mz-C",
+          "numero": 1,
+          "area_m2": 120.0,
+          "perimetro_m": 52.0,
+          "frente_m": 6.0,
+          "fondo_m": 20.0,
+          "precio_soles": 54500,
+          "precio_m2": 454.17,
+          "moneda": "PEN",
+          "estado": "reservado",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi",
+            "Jiron Mariano Melgar"
+          ],
+          "es_esquina": true,
+          "es_irregular": false,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 1 de Manzana C, 120.0 m², frente 6.0m x fondo 20.0m"
+        },
+        {
+          "id": 42,
+          "codigo": "MZC-L-02",
+          "manzana": "Mz-C",
+          "numero": 2,
+          "area_m2": 120.0,
+          "perimetro_m": 52.0,
+          "frente_m": 6.0,
+          "fondo_m": 20.0,
+          "precio_soles": 50000,
+          "precio_m2": 416.67,
+          "moneda": "PEN",
+          "estado": "reservado",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi",
+            "Jiron Mariano Melgar"
+          ],
+          "es_esquina": false,
+          "es_irregular": false,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 2 de Manzana C, 120.0 m², frente 6.0m x fondo 20.0m"
+        },
+        {
+          "id": 43,
+          "codigo": "MZC-L-03",
+          "manzana": "Mz-C",
+          "numero": 3,
+          "area_m2": 120.0,
+          "perimetro_m": 52.0,
+          "frente_m": 6.0,
+          "fondo_m": 20.0,
+          "precio_soles": 54500,
+          "precio_m2": 454.17,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi",
+            "Jiron Mariano Melgar"
+          ],
+          "es_esquina": false,
+          "es_irregular": false,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 3 de Manzana C, 120.0 m², frente 6.0m x fondo 20.0m"
+        },
+        {
+          "id": 44,
+          "codigo": "MZC-L-04",
+          "manzana": "Mz-C",
+          "numero": 4,
+          "area_m2": 205.15,
+          "perimetro_m": 60.52,
+          "frente_m": 10.26,
+          "fondo_m": 20.0,
+          "precio_soles": 61500,
+          "precio_m2": 299.78,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": true,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 4 de Manzana C, 205.15 m², frente 10.26m x fondo 20.0m"
+        },
+        {
+          "id": 45,
+          "codigo": "MZC-L-05",
+          "manzana": "Mz-C",
+          "numero": 5,
+          "area_m2": 173.13,
+          "perimetro_m": 57.32,
+          "frente_m": 8.66,
+          "fondo_m": 20.0,
+          "precio_soles": 60000,
+          "precio_m2": 346.56,
+          "moneda": "PEN",
+          "estado": "reservado",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": true,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 5 de Manzana C, 173.13 m², frente 8.66m x fondo 20.0m"
+        },
+        {
+          "id": 46,
+          "codigo": "MZC-L-06",
+          "manzana": "Mz-C",
+          "numero": 6,
+          "area_m2": 155.32,
+          "perimetro_m": 55.54,
+          "frente_m": 7.77,
+          "fondo_m": 20.0,
+          "precio_soles": 55500,
+          "precio_m2": 357.33,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": true,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 6 de Manzana C, 155.32 m², frente 7.77m x fondo 20.0m"
+        },
+        {
+          "id": 47,
+          "codigo": "MZC-L-07",
+          "manzana": "Mz-C",
+          "numero": 7,
+          "area_m2": 135.17,
+          "perimetro_m": 53.52,
+          "frente_m": 6.76,
+          "fondo_m": 20.0,
+          "precio_soles": 54000,
+          "precio_m2": 399.5,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": true,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 7 de Manzana C, 135.17 m², frente 6.76m x fondo 20.0m"
+        },
+        {
+          "id": 48,
+          "codigo": "MZC-L-08",
+          "manzana": "Mz-C",
+          "numero": 8,
+          "area_m2": 109.28,
+          "perimetro_m": 50.92,
+          "frente_m": 5.46,
+          "fondo_m": 20.0,
+          "precio_soles": 52000,
+          "precio_m2": 475.84,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": true,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 8 de Manzana C, 109.28 m², frente 5.46m x fondo 20.0m"
+        },
+        {
+          "id": 49,
+          "codigo": "MZC-L-09",
+          "manzana": "Mz-C",
+          "numero": 9,
+          "area_m2": 111.41,
+          "perimetro_m": 51.14,
+          "frente_m": 5.57,
+          "fondo_m": 20.0,
+          "precio_soles": 50000,
+          "precio_m2": 448.79,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": true,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 9 de Manzana C, 111.41 m², frente 5.57m x fondo 20.0m"
+        },
+        {
+          "id": 50,
+          "codigo": "MZC-L-10",
+          "manzana": "Mz-C",
+          "numero": 10,
+          "area_m2": 120.0,
+          "perimetro_m": 52.0,
+          "frente_m": 6.0,
+          "fondo_m": 20.0,
+          "precio_soles": 54000,
+          "precio_m2": 450.0,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": false,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 10 de Manzana C, 120.0 m², frente 6.0m x fondo 20.0m"
+        },
+        {
+          "id": 51,
+          "codigo": "MZC-L-11",
+          "manzana": "Mz-C",
+          "numero": 11,
+          "area_m2": 120.0,
+          "perimetro_m": 52.0,
+          "frente_m": 6.0,
+          "fondo_m": 20.0,
+          "precio_soles": 50500,
+          "precio_m2": 420.83,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": false,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 11 de Manzana C, 120.0 m², frente 6.0m x fondo 20.0m"
+        },
+        {
+          "id": 52,
+          "codigo": "MZC-L-12",
+          "manzana": "Mz-C",
+          "numero": 12,
+          "area_m2": 120.0,
+          "perimetro_m": 52.0,
+          "frente_m": 6.0,
+          "fondo_m": 20.0,
+          "precio_soles": 51500,
+          "precio_m2": 429.17,
+          "moneda": "PEN",
+          "estado": "reservado",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": false,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 12 de Manzana C, 120.0 m², frente 6.0m x fondo 20.0m"
+        },
+        {
+          "id": 53,
+          "codigo": "MZC-L-13",
+          "manzana": "Mz-C",
+          "numero": 13,
+          "area_m2": 120.0,
+          "perimetro_m": 52.0,
+          "frente_m": 6.0,
+          "fondo_m": 20.0,
+          "precio_soles": 51500,
+          "precio_m2": 429.17,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": false,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 13 de Manzana C, 120.0 m², frente 6.0m x fondo 20.0m"
+        },
+        {
+          "id": 54,
+          "codigo": "MZC-L-14",
+          "manzana": "Mz-C",
+          "numero": 14,
+          "area_m2": 120.0,
+          "perimetro_m": 52.0,
+          "frente_m": 6.0,
+          "fondo_m": 20.0,
+          "precio_soles": 50000,
+          "precio_m2": 416.67,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": false,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 14 de Manzana C, 120.0 m², frente 6.0m x fondo 20.0m"
+        },
+        {
+          "id": 55,
+          "codigo": "MZC-L-15",
+          "manzana": "Mz-C",
+          "numero": 15,
+          "area_m2": 120.0,
+          "perimetro_m": 52.0,
+          "frente_m": 6.0,
+          "fondo_m": 20.0,
+          "precio_soles": 50000,
+          "precio_m2": 416.67,
+          "moneda": "PEN",
+          "estado": "reservado",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": false,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 15 de Manzana C, 120.0 m², frente 6.0m x fondo 20.0m"
+        },
+        {
+          "id": 56,
+          "codigo": "MZC-L-16",
+          "manzana": "Mz-C",
+          "numero": 16,
+          "area_m2": 120.0,
+          "perimetro_m": 52.0,
+          "frente_m": 6.0,
+          "fondo_m": 20.0,
+          "precio_soles": 50000,
+          "precio_m2": 416.67,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": false,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 16 de Manzana C, 120.0 m², frente 6.0m x fondo 20.0m"
+        },
+        {
+          "id": 57,
+          "codigo": "MZC-L-17",
+          "manzana": "Mz-C",
+          "numero": 17,
+          "area_m2": 120.0,
+          "perimetro_m": 52.0,
+          "frente_m": 6.0,
+          "fondo_m": 20.0,
+          "precio_soles": 50000,
+          "precio_m2": 416.67,
+          "moneda": "PEN",
+          "estado": "reservado",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": false,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 17 de Manzana C, 120.0 m², frente 6.0m x fondo 20.0m"
+        },
+        {
+          "id": 58,
+          "codigo": "MZC-L-18",
+          "manzana": "Mz-C",
+          "numero": 18,
+          "area_m2": 120.0,
+          "perimetro_m": 52.0,
+          "frente_m": 6.0,
+          "fondo_m": 20.0,
+          "precio_soles": 51500,
+          "precio_m2": 429.17,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": false,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 18 de Manzana C, 120.0 m², frente 6.0m x fondo 20.0m"
+        },
+        {
+          "id": 59,
+          "codigo": "MZC-L-19",
+          "manzana": "Mz-C",
+          "numero": 19,
+          "area_m2": 120.0,
+          "perimetro_m": 52.0,
+          "frente_m": 6.0,
+          "fondo_m": 20.0,
+          "precio_soles": 51500,
+          "precio_m2": 429.17,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": false,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 19 de Manzana C, 120.0 m², frente 6.0m x fondo 20.0m"
+        },
+        {
+          "id": 60,
+          "codigo": "MZC-L-20",
+          "manzana": "Mz-C",
+          "numero": 20,
+          "area_m2": 120.0,
+          "perimetro_m": 52.0,
+          "frente_m": 6.0,
+          "fondo_m": 20.0,
+          "precio_soles": 52000,
+          "precio_m2": 433.33,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": false,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 20 de Manzana C, 120.0 m², frente 6.0m x fondo 20.0m"
+        },
+        {
+          "id": 61,
+          "codigo": "MZC-L-21",
+          "manzana": "Mz-C",
+          "numero": 21,
+          "area_m2": 120.0,
+          "perimetro_m": 52.0,
+          "frente_m": 6.0,
+          "fondo_m": 20.0,
+          "precio_soles": 52500,
+          "precio_m2": 437.5,
+          "moneda": "PEN",
+          "estado": "reservado",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": false,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 21 de Manzana C, 120.0 m², frente 6.0m x fondo 20.0m"
+        },
+        {
+          "id": 62,
+          "codigo": "MZC-L-22",
+          "manzana": "Mz-C",
+          "numero": 22,
+          "area_m2": 120.0,
+          "perimetro_m": 52.0,
+          "frente_m": 6.0,
+          "fondo_m": 20.0,
+          "precio_soles": 50000,
+          "precio_m2": 416.67,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": false,
+          "es_irregular": false,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 22 de Manzana C, 120.0 m², frente 6.0m x fondo 20.0m"
+        },
+        {
+          "id": 63,
+          "codigo": "MZC-L-23",
+          "manzana": "Mz-C",
+          "numero": 23,
+          "area_m2": 120.0,
+          "perimetro_m": 52.0,
+          "frente_m": 6.0,
+          "fondo_m": 20.0,
+          "precio_soles": 50000,
+          "precio_m2": 416.67,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Av. Antonio Raimondi"
+          ],
+          "es_esquina": true,
+          "es_irregular": false,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 23 de Manzana C, 120.0 m², frente 6.0m x fondo 20.0m"
+        }
+      ]
+    },
+    {
+      "id": "MZ-D",
+      "nombre": "Manzana D",
+      "total_lotes": 11,
+      "lotes": [
+        {
+          "id": 64,
+          "codigo": "MZD-L-01",
+          "manzana": "Mz-D",
+          "numero": 1,
+          "area_m2": 120.0,
+          "perimetro_m": 52.0,
+          "frente_m": 6.0,
+          "fondo_m": 20.0,
+          "precio_soles": 52500,
+          "precio_m2": 437.5,
+          "moneda": "PEN",
+          "estado": "reservado",
+          "vias_colindantes": [
+            "Jiron Mariano Melgar",
+            "Jiron Julio C. Tello"
+          ],
+          "es_esquina": true,
+          "es_irregular": false,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 1 de Manzana D, 120.0 m², frente 6.0m x fondo 20.0m"
+        },
+        {
+          "id": 65,
+          "codigo": "MZD-L-02",
+          "manzana": "Mz-D",
+          "numero": 2,
+          "area_m2": 120.0,
+          "perimetro_m": 52.0,
+          "frente_m": 6.0,
+          "fondo_m": 20.0,
+          "precio_soles": 54500,
+          "precio_m2": 454.17,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Jiron Mariano Melgar",
+            "Jiron Julio C. Tello"
+          ],
+          "es_esquina": false,
+          "es_irregular": false,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 2 de Manzana D, 120.0 m², frente 6.0m x fondo 20.0m"
+        },
+        {
+          "id": 66,
+          "codigo": "MZD-L-03",
+          "manzana": "Mz-D",
+          "numero": 3,
+          "area_m2": 120.0,
+          "perimetro_m": 52.0,
+          "frente_m": 6.0,
+          "fondo_m": 20.0,
+          "precio_soles": 50000,
+          "precio_m2": 416.67,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Jiron Mariano Melgar",
+            "Jiron Julio C. Tello"
+          ],
+          "es_esquina": false,
+          "es_irregular": false,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 3 de Manzana D, 120.0 m², frente 6.0m x fondo 20.0m"
+        },
+        {
+          "id": 67,
+          "codigo": "MZD-L-04",
+          "manzana": "Mz-D",
+          "numero": 4,
+          "area_m2": 205.15,
+          "perimetro_m": 60.52,
+          "frente_m": 10.26,
+          "fondo_m": 20.0,
+          "precio_soles": 60500,
+          "precio_m2": 294.91,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Jiron Mariano Melgar"
+          ],
+          "es_esquina": false,
+          "es_irregular": true,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 4 de Manzana D, 205.15 m², frente 10.26m x fondo 20.0m"
+        },
+        {
+          "id": 68,
+          "codigo": "MZD-L-05",
+          "manzana": "Mz-D",
+          "numero": 5,
+          "area_m2": 173.13,
+          "perimetro_m": 57.32,
+          "frente_m": 8.66,
+          "fondo_m": 20.0,
+          "precio_soles": 61000,
+          "precio_m2": 352.34,
+          "moneda": "PEN",
+          "estado": "reservado",
+          "vias_colindantes": [
+            "Jiron Mariano Melgar"
+          ],
+          "es_esquina": false,
+          "es_irregular": true,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 5 de Manzana D, 173.13 m², frente 8.66m x fondo 20.0m"
+        },
+        {
+          "id": 69,
+          "codigo": "MZD-L-06",
+          "manzana": "Mz-D",
+          "numero": 6,
+          "area_m2": 155.32,
+          "perimetro_m": 55.54,
+          "frente_m": 7.77,
+          "fondo_m": 20.0,
+          "precio_soles": 55000,
+          "precio_m2": 354.11,
+          "moneda": "PEN",
+          "estado": "vendido",
+          "vias_colindantes": [
+            "Jiron Mariano Melgar"
+          ],
+          "es_esquina": false,
+          "es_irregular": true,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 6 de Manzana D, 155.32 m², frente 7.77m x fondo 20.0m"
+        },
+        {
+          "id": 70,
+          "codigo": "MZD-L-07",
+          "manzana": "Mz-D",
+          "numero": 7,
+          "area_m2": 135.17,
+          "perimetro_m": 53.52,
+          "frente_m": 6.76,
+          "fondo_m": 20.0,
+          "precio_soles": 56500,
+          "precio_m2": 417.99,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Jiron Mariano Melgar"
+          ],
+          "es_esquina": false,
+          "es_irregular": true,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 7 de Manzana D, 135.17 m², frente 6.76m x fondo 20.0m"
+        },
+        {
+          "id": 71,
+          "codigo": "MZD-L-08",
+          "manzana": "Mz-D",
+          "numero": 8,
+          "area_m2": 109.28,
+          "perimetro_m": 50.92,
+          "frente_m": 5.46,
+          "fondo_m": 20.0,
+          "precio_soles": 50000,
+          "precio_m2": 457.54,
+          "moneda": "PEN",
+          "estado": "reservado",
+          "vias_colindantes": [
+            "Jiron Mariano Melgar"
+          ],
+          "es_esquina": false,
+          "es_irregular": true,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 8 de Manzana D, 109.28 m², frente 5.46m x fondo 20.0m"
+        },
+        {
+          "id": 72,
+          "codigo": "MZD-L-09",
+          "manzana": "Mz-D",
+          "numero": 9,
+          "area_m2": 111.41,
+          "perimetro_m": 51.14,
+          "frente_m": 5.57,
+          "fondo_m": 20.0,
+          "precio_soles": 50000,
+          "precio_m2": 448.79,
+          "moneda": "PEN",
+          "estado": "reservado",
+          "vias_colindantes": [
+            "Jiron Mariano Melgar"
+          ],
+          "es_esquina": false,
+          "es_irregular": true,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 9 de Manzana D, 111.41 m², frente 5.57m x fondo 20.0m"
+        },
+        {
+          "id": 73,
+          "codigo": "MZD-L-10",
+          "manzana": "Mz-D",
+          "numero": 10,
+          "area_m2": 120.0,
+          "perimetro_m": 52.0,
+          "frente_m": 6.0,
+          "fondo_m": 20.0,
+          "precio_soles": 52500,
+          "precio_m2": 437.5,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Jiron Mariano Melgar"
+          ],
+          "es_esquina": false,
+          "es_irregular": false,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 10 de Manzana D, 120.0 m², frente 6.0m x fondo 20.0m"
+        },
+        {
+          "id": 74,
+          "codigo": "MZD-L-11",
+          "manzana": "Mz-D",
+          "numero": 11,
+          "area_m2": 120.0,
+          "perimetro_m": 52.0,
+          "frente_m": 6.0,
+          "fondo_m": 20.0,
+          "precio_soles": 50000,
+          "precio_m2": 416.67,
+          "moneda": "PEN",
+          "estado": "disponible",
+          "vias_colindantes": [
+            "Jiron Mariano Melgar"
+          ],
+          "es_esquina": true,
+          "es_irregular": false,
+          "coordenadas_plano": {
+            "nota": "Coordenadas aproximadas - requiere DXF/AutoCAD para precision",
+            "x_relativo": null,
+            "y_relativo": null
+          },
+          "descripcion": "Lote 11 de Manzana D, 120.0 m², frente 6.0m x fondo 20.0m"
+        }
+      ]
+    }
+  ]
+}

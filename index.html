@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Visor 3D interactivo de lotes — Urbanización Lluyllucucha. Recorre y explora los lotes disponibles en 3D." />
+  <title>Urbanización Lluyllucucha — Visor 3D</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/nipplejs/0.10.1/nipplejs.min.js"></script>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════
+       PANTALLA DE CARGA
+  ════════════════════════════════════════════ -->
+  <div id="loading-screen">
+    <div class="loader-content">
+      <div class="loader-icon">🏡</div>
+      <h2 class="loader-title">Urbanización <span>Lluyllucucha</span></h2>
+      <div class="loader-bar-wrap">
+        <div class="loader-bar-fill" id="loader-progress"></div>
+      </div>
+      <p class="loader-text" id="loader-text">Inicializando visor 3D...</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       CANVAS THREE.JS
+  ════════════════════════════════════════════ -->
+  <canvas id="three-canvas"></canvas>
+
+  <!-- ═══════════════════════════════════════════
+       INTERFAZ DE USUARIO (OVERLAY)
+  ════════════════════════════════════════════ -->
+  <div id="ui-overlay">
+
+    <!-- HEADER -->
+    <header id="header">
+      <div class="header-left">
+        <h1 class="project-name">Urb. <span>Lluyllucucha</span></h1>
+        <span class="project-badge" id="manzana-badge">Plano completo &middot; 4 Manzanas &middot; 74 lotes</span>
+      </div>
+      <div class="header-stats">
+        <div class="stat-chip disponible">
+          <span class="chip-dot"></span>
+          <strong id="count-disponible">0</strong>
+          <span>Disponibles</span>
+        </div>
+        <div class="stat-chip reservado">
+          <span class="chip-dot"></span>
+          <strong id="count-reservado">0</strong>
+          <span>Reservados</span>
+        </div>
+        <div class="stat-chip vendido">
+          <span class="chip-dot"></span>
+          <strong id="count-vendido">0</strong>
+          <span>Vendidos</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- BARRA DE FILTROS / CONTROLES -->
+    <nav id="controls-bar" aria-label="Filtros de lotes">
+      <button class="ctrl-btn active" id="btn-todos"        data-filter="all">Todos</button>
+      <button class="ctrl-btn"        id="btn-disponibles"  data-filter="disponible">Disponibles</button>
+      <button class="ctrl-btn"        id="btn-reservados"   data-filter="reservado">Reservados</button>
+      <div class="ctrl-divider"></div>
+      <button class="ctrl-btn icon"   id="btn-day-night"    title="Día / Noche" aria-label="Día / Noche">🌙</button>
+      <button class="ctrl-btn icon"   id="btn-tour-mode"    title="Tour Guiado" aria-label="Tour Guiado">🎥</button>
+      <button class="ctrl-btn icon"   id="btn-walk-mode"    title="Modo Caminata" aria-label="Modo Caminata">🚶</button>
+      <button class="ctrl-btn icon"   id="btn-reset-camera" title="Restablecer cámara" aria-label="Restablecer cámara">↺</button>
+    </nav>
+
+    <!-- LEYENDA -->
+    <div id="legend" aria-label="Leyenda de estados">
+      <div class="legend-item">
+        <span class="legend-dot" style="--c:#22c55e"></span>Disponible
+      </div>
+      <div class="legend-item">
+        <span class="legend-dot" style="--c:#f59e0b"></span>Reservado
+      </div>
+      <div class="legend-item">
+        <span class="legend-dot" style="--c:#ef4444"></span>Vendido
+      </div>
+    </div>
+
+    <!-- MONITOR FPS -->
+    <div id="perf-monitor">
+      <span id="fps-label">FPS: --</span>
+      <span id="lots-label">22 lotes</span>
+    </div>
+
+    <!-- TOOLTIP (hover rápido) -->
+    <div id="tooltip" class="hidden" role="tooltip" aria-live="polite">
+      <span id="tt-codigo" class="tt-title"></span>
+      <span id="tt-area" class="tt-sub"></span>
+      <span id="tt-precio" class="tt-price"></span>
+    </div>
+
+    <!-- PANEL DE LOTE (click) -->
+    <aside id="lot-panel" class="hidden" aria-label="Información del lote">
+      <div class="panel-header">
+        <div class="panel-header-info">
+          <span class="panel-estado-badge" id="panel-estado">Disponible</span>
+          <h2 class="panel-codigo" id="panel-codigo">MZA-L-01</h2>
+        </div>
+        <button class="panel-close-btn" id="btn-close-panel" aria-label="Cerrar panel">✕</button>
+      </div>
+
+      <div class="panel-body">
+        <div class="panel-grid">
+          <div class="panel-field">
+            <span class="field-label">Área</span>
+            <span class="field-val" id="panel-area">— m²</span>
+          </div>
+          <div class="panel-field">
+            <span class="field-label">Frente</span>
+            <span class="field-val" id="panel-frente">— m</span>
+          </div>
+          <div class="panel-field">
+            <span class="field-label">Fondo</span>
+            <span class="field-val" id="panel-fondo">— m</span>
+          </div>
+          <div class="panel-field">
+            <span class="field-label">Manzana</span>
+            <span class="field-val" id="panel-manzana">—</span>
+          </div>
+        </div>
+
+        <div class="panel-price-box">
+          <span class="price-tag">Precio</span>
+          <strong class="price-amount" id="panel-precio">S/ —</strong>
+          <span class="price-m2" id="panel-precio-m2">S/ — / m²</span>
+        </div>
+
+        <div class="panel-vias-section">
+          <span class="field-label">Vías colindantes</span>
+          <div class="panel-vias-tags" id="panel-vias"></div>
+        </div>
+
+        <button class="btn-contactar" id="btn-contactar">
+          Consultar disponibilidad →
+        </button>
+      </div>
+    </aside>
+
+    <!-- CROSSHAIR para modo caminata (Icono de ubicación) -->
+    <div id="crosshair" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -100%); pointer-events: none; z-index: 1000; filter: drop-shadow(0px 3px 3px rgba(0,0,0,0.4));">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="#ef4444" stroke="#ffffff" stroke-width="1.5"/>
+      </svg>
+    </div>
+
+    <!-- JOYSTICK (solo se muestra en móvil en Modo Caminata) -->
+    <div id="joystick-zone" style="display: none; position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%); width: 150px; height: 150px; z-index: 999; touch-action: none;"></div>
+
+  </div><!-- /ui-overlay -->
+
+  <!-- THREE.JS via importmap -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.168.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.168.0/examples/jsm/"
+    }
+  }
+  </script>
+  <script type="module" src="js/main.js"></script>
+
+</body>
+</html>
