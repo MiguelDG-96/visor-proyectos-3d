@@ -51,8 +51,8 @@ async function main() {
     const { center, bounds } = createAllManzanas(data);
 
     // 5. Terreno y calles
-    setProgress(65, 'Creando terreno y calles...');
-    createTerrain(bounds);
+    setProgress(65, 'Creando terreno, calles y perímetro...');
+    createTerrain(bounds, data.infraestructura);
 
     // 6. Cámara
     setProgress(75, 'Configurando cámara...');

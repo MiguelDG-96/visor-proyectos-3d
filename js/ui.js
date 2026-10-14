@@ -17,6 +17,7 @@ const EL = {
   panelManzana: $('panel-manzana'),
   panelPrecio:  $('panel-precio'),
   panelPrecioM2:$('panel-precio-m2'),
+  panelCoords:  $('panel-coords'),
   panelVias:    $('panel-vias'),
   btnClose:     $('btn-close-panel'),
   btnContactar: $('btn-contactar'),
@@ -55,7 +56,7 @@ export function initUI(onFilter, onResetCamera) {
   // Botón contactar (demo — WhatsApp o modal)
   EL.btnContactar?.addEventListener('click', () => {
     const lot   = EL.panel.dataset.lotId;
-    const msg   = encodeURIComponent(`Hola, me interesa el lote ${lot} de la Urbanización Lluyllucucha.`);
+    const msg   = encodeURIComponent(`Hola, me interesa el lote ${lot} del proyecto Lotización Chávez Pata en Moyobamba.`);
     window.open(`https://wa.me/?text=${msg}`, '_blank');
   });
 
@@ -140,8 +141,8 @@ export function showLotPanel(lot) {
 
   if (EL.panelCodigo)   EL.panelCodigo.textContent   = lot.codigo;
   if (EL.panelArea)     EL.panelArea.textContent     = `${lot.area_m2.toFixed(2)} m²`;
-  if (EL.panelFrente)   EL.panelFrente.textContent   = `${lot.frente_m.toFixed(2)} m`;
-  if (EL.panelFondo)    EL.panelFondo.textContent    = `${lot.fondo_m.toFixed(2)} m`;
+  if (EL.panelFrente)   EL.panelFrente.textContent   = lot.perimetro_m ? `${lot.perimetro_m.toFixed(2)} m` : '—';
+  if (EL.panelFondo)    EL.panelFondo.textContent    = lot.frente_m ? `${lot.frente_m.toFixed(2)} m` : '—';
   if (EL.panelManzana)  EL.panelManzana.textContent  = lot.manzana;
 
   if (EL.panelPrecio) {
@@ -149,6 +150,18 @@ export function showLotPanel(lot) {
   }
   if (EL.panelPrecioM2) {
     EL.panelPrecioM2.textContent = `S/ ${lot.precio_m2.toFixed(2)} / m²`;
+  }
+
+  // Georreferenciación oficial UTM y GPS
+  if (EL.panelCoords) {
+    const utmX = lot.coords_utm?.x ? lot.coords_utm.x.toFixed(2) : '—';
+    const utmY = lot.coords_utm?.y ? lot.coords_utm.y.toFixed(2) : '—';
+    const lat  = lot.coords_gps?.lat ? lot.coords_gps.lat.toFixed(6) : '—';
+    const lon  = lot.coords_gps?.lon ? lot.coords_gps.lon.toFixed(6) : '—';
+    EL.panelCoords.innerHTML = `
+      <div><strong>UTM 18S:</strong> E ${utmX} · N ${utmY}</div>
+      <div style="margin-top: 3px;"><strong>WGS84:</strong> ${lat}, ${lon}</div>
+    `;
   }
 
   // Vías colindantes

@@ -1,59 +1,56 @@
 /**
- * camera.js
- * OrbitControls, posiciones preset y reset de cámara.
+ * camera.js — OrbitControls y Cámara para Chávez Pata
  */
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { getCamera, getRenderer } from './scene.js';
 
-let _controls    = null;
-let _manzanaCenter = { x: 0, z: 0 };
+let _controls = null;
+let _projectCenter = { x: 0, z: 0 };
 
 /**
- * Configura OrbitControls y posiciona la cámara sobre la manzana.
- * @param {{ x: number, z: number }} center  Centro de la manzana en world-space
+ * Configura OrbitControls y posiciona la cámara sobre el plano de Chávez Pata
+ * @param {{ x: number, z: number }} center Centro del proyecto en world-space
  */
 export function setupCamera(center) {
-  _manzanaCenter = center;
-  const camera   = getCamera();
+  _projectCenter = center;
+  const camera = getCamera();
   const renderer = getRenderer();
 
-  // Vista aérea ajustada para centrar el plano y evitar superposición con la UI inferior
-  camera.position.set(center.x, 130, center.z + 90);
+  // Vista aérea global abarcando todo el proyecto (730m de extensión)
+  camera.position.set(center.x, 380, center.z + 360);
 
   _controls = new OrbitControls(camera, renderer.domElement);
-  // Desplazar el target ligeramente en +Z para que el centro visual del plano suba en la pantalla
-  _controls.target.set(center.x, 0, center.z + 15);
-  _controls.enableDamping   = true;
-  _controls.dampingFactor   = 0.07;
-  _controls.minDistance     = 8;
-  _controls.maxDistance     = 400;
-  _controls.maxPolarAngle   = Math.PI / 2.05;
+  _controls.target.set(center.x, 0, center.z);
+  _controls.enableDamping = true;
+  _controls.dampingFactor = 0.08;
+  _controls.minDistance = 5;
+  _controls.maxDistance = 1500;
+  _controls.maxPolarAngle = Math.PI / 2.05;
   _controls.screenSpacePanning = false;
   _controls.update();
 }
 
-/** Regresa la cámara a la vista aérea inicial con animación suave. */
+/** Regresa la cámara a la vista aérea inicial con animación suave */
 export function resetCamera() {
   const camera = getCamera();
-  const cx = _manzanaCenter.x;
-  const cz = _manzanaCenter.z;
+  const cx = _projectCenter.x;
+  const cz = _projectCenter.z;
 
-  // Mismas coordenadas de la posición inicial para centrar correctamente
-  const targetPos    = { x: cx, y: 130, z: cz + 90 };
-  const targetLookAt = { x: cx, y: 0,   z: cz + 15 };
+  const targetPos = { x: cx, y: 380, z: cz + 360 };
+  const targetLookAt = { x: cx, y: 0, z: cz };
 
   let frame = 0;
-  const totalFrames = 40;
+  const totalFrames = 45;
 
   const startPos = {
     x: camera.position.x,
     y: camera.position.y,
-    z: camera.position.z,
+    z: camera.position.z
   };
   const startTarget = {
     x: _controls.target.x,
     y: _controls.target.y,
-    z: _controls.target.z,
+    z: _controls.target.z
   };
 
   function animStep() {
@@ -63,12 +60,12 @@ export function resetCamera() {
     camera.position.set(
       _lerp(startPos.x, targetPos.x, t),
       _lerp(startPos.y, targetPos.y, t),
-      _lerp(startPos.z, targetPos.z, t),
+      _lerp(startPos.z, targetPos.z, t)
     );
     _controls.target.set(
       _lerp(startTarget.x, targetLookAt.x, t),
       _lerp(startTarget.y, targetLookAt.y, t),
-      _lerp(startTarget.z, targetLookAt.z, t),
+      _lerp(startTarget.z, targetLookAt.z, t)
     );
     _controls.update();
 
@@ -85,19 +82,15 @@ export function toggleTourMode() {
   if (!_controls) return _isTourMode;
   
   if (_isTourMode) {
-    // Iniciar tour
     _controls.autoRotate = true;
-    _controls.autoRotateSpeed = 1.5; // velocidad de giro
-    // Bajar un poco la cámara para una vista más isométrica
+    _controls.autoRotateSpeed = 1.2;
     const camera = getCamera();
-    camera.position.y = Math.max(camera.position.y * 0.7, 40);
+    camera.position.y = Math.max(camera.position.y * 0.65, 120);
   } else {
-    // Detener tour
     _controls.autoRotate = false;
   }
   return _isTourMode;
 }
 
-// ── Helpers ────────────────────────────────────
 function _lerp(a, b, t) { return a + (b - a) * t; }
-function _easeOut(t)     { return 1 - Math.pow(1 - t, 3); }
+function _easeOut(t) { return 1 - Math.pow(1 - t, 3); }

@@ -1,0 +1,9 @@
+{
+  "name": "visor-inmobiliario-3d",
+  "version": "1.0.0",
+  "description": "Visor 3D Interactivo Three.js — Lotización Chávez Pata (Moyobamba)",
+  "scripts": {
+    "start": "node serve.js",
+    "dev": "node serve.js"
+  }
+}

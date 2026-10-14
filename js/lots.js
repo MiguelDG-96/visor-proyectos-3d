@@ -1,264 +1,210 @@
 /**
- * lots.js — PLANO COMPLETO (construcción algorítmica)
+ * lots.js — LOTIZACIÓN CHÁVEZ PATA (3D Extrusion Poligonal Real)
  *
- * Cada manzana se construye fila por fila, lote por lote, en el ESPACIO LOCAL
- * de un grupo Three.js que está rotado -35.1° (ángulo real del urbanismo).
- *
- * Coordenadas de anclaje derivadas del análisis PDF:
- *   escala: 9.08 pts/m · ángulo: 35.1° · referencia: centro Mz-A = (0,0)
- *
- * Estructura de cada manzana en espacio local del grupo URB:
- *   X = dirección frente (a lo largo de la calle)
- *   Z = dirección fondo (perpendicular, fondo del lote)
- *   Fila 1: z ∈ [0, 20]   Fila 2: z ∈ [20, 40]
+ * Cada lote se extruye en 3D respetando su geometría vectorial real del CAD.
+ * Coordenadas centradas con origen local relativo en UTM Zona 18S.
  */
 
 import * as THREE from 'three';
 import { getScene } from './scene.js';
 
-const LOT_HEIGHT = 0.55;
-const LOT_GAP    = 0.10;
-const URB_ANGLE  = THREE.MathUtils.degToRad(-35.1); // rotación del urbanismo
-
+const LOT_HEIGHT = 0.65; // Altura de elevación 3D del lote en metros
 const COLORS = {
-  disponible: 0x22c55e,
-  reservado:  0xf59e0b,
-  vendido:    0xef4444,
+  disponible: 0x22c55e, // Verde
+  reservado:  0xf59e0b, // Ámbar
+  vendido:    0xef4444, // Rojo
 };
 
-// ── Geometrías cacheadas para casas de muestra ──────
-const houseBaseMat = new THREE.MeshLambertMaterial({ color: 0xffffff }); // Casa blanca
-const houseRoofMat = new THREE.MeshLambertMaterial({ color: 0x3b2f2f }); // Techo oscuro
+// Materiales para casitas de muestra en lotes vendidos
+const houseBaseMat = new THREE.MeshLambertMaterial({ color: 0xf8fafc });
+const houseRoofMat = new THREE.MeshLambertMaterial({ color: 0xb91c1c });
 
-// ── Configuración de manzanas ─────────────────────
-//
-// anchor [x, z]: extremo superior-izquierdo de la Fila 1 en espacio LOCAL del URB_GROUP.
-//   Derivado del análisis: Mz-A L1 → local(-28.31,−11.31), corner=(-32.7,−21.3)
-//
-// rows: arreglos de números de lote en orden IZQUIERDA→DERECHA para cada fila.
-//   Fila 2 suele estar numerada en sentido contrario (comparten pared trasera con Fila 1).
-//
-const MANZANA_CONFIG = {
-
-  'MZ-A': {
-    // Lotes 1-11 (irregulares, frente decreciente), 12-22 (estándar 6 m)
-    anchor: [-32.7, -21.3],
-    rows: [
-      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-      [22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12],
-    ],
-  },
-
-  'MZ-B': {
-    // Lotes 1-10 (irregulares, L8 es lote esquina 260 m²), 11-18 (estándar)
-    anchor: [44.0, -7.4],
-    rows: [
-      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-      [18, 17, 16, 15, 14, 13, 12, 11],
-    ],
-  },
-
-  'MZ-C': {
-    // 23 lotes. Fila 1: L1-L11 (mixtos: estándar + irregulares L4-L9).
-    // Fila 2: L12-L23 (todos estándar 120 m²).
-    anchor: [-31.24, 36.14],
-    rows: [
-      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-      [23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12],
-    ],
-  },
-
-  'MZ-D': {
-    // 11 lotes, manzana irregular. Fila 1: L1-L8. Fila 2 (corta): L9-L11.
-    anchor: [43.9, 37.0],
-    rows: [
-      [1, 2, 3, 4, 5, 6, 7, 8],
-      [11, 10, 9],
-    ],
-  },
-};
-
-// ── Estado interno ─────────────────────────────────
 let _lotMeshes = [];
 let _urbGroup  = null;
 
-// ══════════════════════════════════════════════════
-// API pública
-// ══════════════════════════════════════════════════
-
 /**
- * Crea el urbanismo completo: URB_GROUP rotado, 4 manzanas con lotes ordenados.
- * @param {object} jsonData  JSON completo del proyecto
- * @returns {{ center, bounds }}
+ * Crea la lotización 3D completa a partir de los lotes georreferenciados
+ * @param {object} jsonData JSON con manzanas y geometrías CAD
+ * @returns {{ center: {x, z}, bounds: {minX, maxX, minZ, maxZ} }}
  */
 export function createAllManzanas(jsonData) {
   const scene = getScene();
 
   _urbGroup = new THREE.Group();
-  _urbGroup.name = 'urbanizacion';
-  _urbGroup.rotation.y = URB_ANGLE;
+  _urbGroup.name = 'urbanizacion_chavez_pata';
+  _urbGroup.rotation.y = 0; // Geometría CAD orientada con el norte hacia -Z
 
-  const allLocalX = [];
-  const allLocalZ = [];
+  const allX = [];
+  const allZ = [];
 
-  for (const [mzId, cfg] of Object.entries(MANZANA_CONFIG)) {
-    const mzData = jsonData.manzanas.find(m => m.id === mzId);
-    if (!mzData) continue;
+  const manzanas = jsonData.manzanas || [];
 
+  for (const mzData of manzanas) {
     const mzGroup = new THREE.Group();
-    mzGroup.name  = mzId;
+    mzGroup.name = mzData.id;
 
-    // Anclaje de la manzana en el espacio LOCAL del URB_GROUP
-    mzGroup.position.set(cfg.anchor[0], 0, cfg.anchor[1]);
+    for (const lot of mzData.lotes) {
+      const cx = lot.centroideLocal[0];
+      const cz = lot.centroideLocal[1];
 
-    cfg.rows.forEach((rowNums, rowIdx) => {
-      let xCursor = 0;
-      const rowZOffset = rowIdx * 20; // cada fila tiene 20 m de fondo
+      const mesh = _buildLotMesh(lot, cx, cz);
+      mzGroup.add(mesh);
+      _lotMeshes.push(mesh);
 
-      rowNums.forEach(lotNum => {
-        const lot = mzData.lotes.find(l => l.numero === lotNum);
-        if (!lot) return;
-
-        const fw = lot.frente_m;   // ancho a lo largo de X local
-        const fd = lot.fondo_m;    // profundidad a lo largo de Z local
-
-        const cx = xCursor + fw / 2;
-        const cz = rowZOffset + fd / 2;
-
-        const mesh = _buildLotMesh(lot, cx, cz, fw, fd);
-        mzGroup.add(mesh);
-        _lotMeshes.push(mesh);
-
-        // Acumular bounds en espacio URB LOCAL
-        allLocalX.push(cfg.anchor[0] + cx);
-        allLocalZ.push(cfg.anchor[1] + cz);
-
-        xCursor += fw;
-      });
-    });
+      allX.push(cx);
+      allZ.push(cz);
+    }
 
     _urbGroup.add(mzGroup);
   }
 
   scene.add(_urbGroup);
 
-  // ── Calcular bounds y centro en world-space ─────
-  const lMinX = Math.min(...allLocalX) - 15;
-  const lMaxX = Math.max(...allLocalX) + 15;
-  const lMinZ = Math.min(...allLocalZ) - 15;
-  const lMaxZ = Math.max(...allLocalZ) + 15;
+  // Bounds y centro de la escena
+  const minX = Math.min(...allX);
+  const maxX = Math.max(...allX);
+  const minZ = Math.min(...allZ);
+  const maxZ = Math.max(...allZ);
 
-  const lCx = (lMinX + lMaxX) / 2;
-  const lCz = (lMinZ + lMaxZ) / 2;
-
-  // Rotar centro local → world (aplicar rotación del URB_GROUP)
-  const cosA = Math.cos(URB_ANGLE);
-  const sinA = Math.sin(URB_ANGLE);
   const worldCenter = {
-    x: lCx * cosA - lCz * sinA,
-    z: lCx * sinA + lCz * cosA,
+    x: (minX + maxX) / 2,
+    z: (minZ + maxZ) / 2
   };
 
-  const halfSpread = Math.max(lMaxX - lMinX, lMaxZ - lMinZ) / 2 + 25;
+  const halfSpread = Math.max(maxX - minX, maxZ - minZ) / 2 + 40;
   const worldBounds = {
     minX: worldCenter.x - halfSpread,
     maxX: worldCenter.x + halfSpread,
     minZ: worldCenter.z - halfSpread,
-    maxZ: worldCenter.z + halfSpread,
+    maxZ: worldCenter.z + halfSpread
   };
 
   return { center: worldCenter, bounds: worldBounds };
 }
 
-// ══════════════════════════════════════════════════
-// Privado: crear mesh de lote
-// ══════════════════════════════════════════════════
+/**
+ * Construye el Mesh 3D extruido de un lote con su forma poligonal exacta
+ */
+function _buildLotMesh(lot, cx, cz) {
+  let geo;
 
-function _buildLotMesh(lot, cx, cz, fw, fd) {
-  const gw = Math.max(fw - LOT_GAP, 0.2);  // frente con gap
-  const gd = Math.max(fd - LOT_GAP, 0.2);  // fondo con gap
+  // Extrusión poligonal si cuenta con vértices relativos
+  if (lot.verticesRel && lot.verticesRel.length >= 3) {
+    const shape = new THREE.Shape();
+    const v = lot.verticesRel;
 
-  // BoxGeometry: X = frente (calle), Y = altura, Z = fondo (profundidad del lote)
-  const geo = new THREE.BoxGeometry(gw, LOT_HEIGHT, gd);
+    // En Three.js 2D Shape: X horizontal, Y vertical
+    // Para que al rotar -90° en X coincida con el plano de suelo (X Este, Z Sur):
+    // shape.x = rel_x, shape.y = -rel_z
+    shape.moveTo(v[0][0], -v[0][1]);
+    for (let i = 1; i < v.length; i++) {
+      shape.lineTo(v[i][0], -v[i][1]);
+    }
+    shape.closePath();
+
+    geo = new THREE.ExtrudeGeometry(shape, {
+      depth: LOT_HEIGHT,
+      bevelEnabled: true,
+      bevelSegments: 1,
+      steps: 1,
+      bevelSize: 0.04,
+      bevelThickness: 0.04
+    });
+
+    // Rotar para colocar la extrusión plana en el suelo horizontal
+    geo.rotateX(-Math.PI / 2);
+  } else {
+    // Fallback a caja
+    const fw = lot.frente_m || 8.0;
+    const fd = lot.fondo_m || 18.0;
+    geo = new THREE.BoxGeometry(fw, LOT_HEIGHT, fd);
+  }
 
   const mat = new THREE.MeshStandardMaterial({
-    color:             COLORS[lot.estado] ?? COLORS.disponible,
-    emissive:          new THREE.Color(0x000000),
+    color: COLORS[lot.estado] ?? COLORS.disponible,
+    emissive: new THREE.Color(0x000000),
     emissiveIntensity: 0,
-    roughness:         0.62,
-    metalness:         0.04,
+    roughness: 0.58,
+    metalness: 0.05
   });
 
   const mesh = new THREE.Mesh(geo, mat);
   mesh.position.set(cx, LOT_HEIGHT / 2, cz);
   mesh.receiveShadow = true;
+  mesh.castShadow = true;
 
-  // Bordes del lote
+  // Bordes del lote para resaltar linderos
   mesh.add(new THREE.LineSegments(
     new THREE.EdgesGeometry(geo),
-    new THREE.LineBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.22 })
+    new THREE.LineBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.28 })
   ));
 
-  // Si el lote está vendido, agregar una casita de muestra (Opción 3)
+  // Si el lote está vendido, agregar una casita 3D estilizada
   if (lot.estado === 'vendido') {
-    const house = _createSampleHouse(gw, gd);
-    // Posicionarla encima del lote
+    const fw = lot.frente_m || 8.0;
+    const fd = lot.fondo_m || 16.0;
+    const house = _createSampleHouse(fw, fd);
     house.position.y = (LOT_HEIGHT / 2) + 0.05;
     mesh.add(house);
   }
 
-  // Etiqueta con número
+  // Etiqueta con número de lote (Sprite 2D siempre mirando a la cámara)
   mesh.add(_makeLabel(lot.numero));
 
-  // Datos para interacción y animación
+  // Metadatos para interacción y animación
   mesh.userData = {
     type: 'lot',
     lot,
-    estado:          lot.estado,
-    baseY:           LOT_HEIGHT / 2,
-    targetY:         LOT_HEIGHT / 2,
-    targetEmissive:  0,
-    _isSelected:     false,
+    estado: lot.estado,
+    baseY: LOT_HEIGHT / 2,
+    targetY: LOT_HEIGHT / 2,
+    targetEmissive: 0,
+    _isSelected: false
   };
 
   return mesh;
 }
 
+/**
+ * Crea una etiqueta Sprite circular con el número de lote
+ */
 function _makeLabel(num) {
-  const sz  = 256;
-  const cv  = document.createElement('canvas');
-  cv.width  = cv.height = sz;
+  const sz = 128;
+  const cv = document.createElement('canvas');
+  cv.width = cv.height = sz;
   const ctx = cv.getContext('2d');
 
-  // Círculo fondo
-  ctx.fillStyle = 'rgba(0,0,0,0.55)';
+  // Fondo circular
+  ctx.fillStyle = 'rgba(15, 23, 42, 0.78)';
   ctx.beginPath();
-  ctx.arc(sz / 2, sz / 2, sz * 0.38, 0, Math.PI * 2);
+  ctx.arc(sz / 2, sz / 2, sz * 0.42, 0, Math.PI * 2);
   ctx.fill();
+  ctx.strokeStyle = '#ffffff';
+  ctx.lineWidth = 3.5;
+  ctx.stroke();
 
-  // Número
-  ctx.fillStyle    = '#ffffff';
-  ctx.font         = `bold ${sz * 0.38}px Inter, Arial, sans-serif`;
-  ctx.textAlign    = 'center';
+  // Texto
+  ctx.fillStyle = '#ffffff';
+  ctx.font = `bold ${sz * 0.42}px Inter, Arial, sans-serif`;
+  ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillText(String(num), sz / 2, sz / 2);
 
   const spr = new THREE.Sprite(
     new THREE.SpriteMaterial({
-      map:         new THREE.CanvasTexture(cv),
+      map: new THREE.CanvasTexture(cv),
       transparent: true,
-      depthTest:   false,
+      depthTest: false
     })
   );
-  spr.scale.set(3.2, 3.2, 1);
-  spr.position.set(0, LOT_HEIGHT / 2 + 0.05, 0);
+  spr.scale.set(3.6, 3.6, 1);
+  spr.position.set(0, LOT_HEIGHT + 0.8, 0);
   return spr;
 }
 
-// ══════════════════════════════════════════════════
-// Filtros y animación
-// ══════════════════════════════════════════════════
-
+/**
+ * Filtra los lotes por estado
+ */
 export const getLotMeshes = () => _lotMeshes;
 
 export function filterLots(filter) {
@@ -269,19 +215,19 @@ export function filterLots(filter) {
 
 export function setLotHovered(mesh, hovered) {
   if (!mesh?.userData?.type || mesh.userData._isSelected) return;
-  mesh.userData.targetY        = hovered ? mesh.userData.baseY + 1.0 : mesh.userData.baseY;
-  mesh.userData.targetEmissive = hovered ? 0.22 : 0;
+  mesh.userData.targetY = hovered ? mesh.userData.baseY + 1.2 : mesh.userData.baseY;
+  mesh.userData.targetEmissive = hovered ? 0.30 : 0;
 }
 
 export function setLotSelected(mesh, selected) {
   if (!mesh?.userData) return;
-  mesh.userData._isSelected    = selected;
-  mesh.userData.targetY        = selected ? mesh.userData.baseY + 2.4 : mesh.userData.baseY;
-  mesh.userData.targetEmissive = selected ? 0.55 : 0;
+  mesh.userData._isSelected = selected;
+  mesh.userData.targetY = selected ? mesh.userData.baseY + 2.8 : mesh.userData.baseY;
+  mesh.userData.targetEmissive = selected ? 0.65 : 0;
 }
 
 export function animateLots() {
-  const lf = 0.11;
+  const lf = 0.12;
   _lotMeshes.forEach(mesh => {
     if (!mesh.userData?.type) return;
     const dy = mesh.userData.targetY - mesh.position.y;
@@ -294,15 +240,15 @@ export function animateLots() {
   });
 }
 
-// ── Helpers de Casa ────────────────────────────────
-/** Crea un grupo 3D con forma de casa pequeña */
-function _createSampleHouse(gw, gd) {
+/**
+ * Crea una vivienda low-poly estilizada para los lotes vendidos
+ */
+function _createSampleHouse(fw, fd) {
   const houseGroup = new THREE.Group();
   
-  // Base de la casa (ocupa 60% del ancho y 50% del fondo)
-  const baseW = Math.max(gw * 0.6, 3);
-  const baseD = Math.max(gd * 0.5, 6);
-  const baseH = 3.5; // altura de 1 piso
+  const baseW = Math.max(fw * 0.55, 3.5);
+  const baseD = Math.max(fd * 0.50, 6.0);
+  const baseH = 3.6;
 
   const baseGeo = new THREE.BoxGeometry(baseW, baseH, baseD);
   const baseMesh = new THREE.Mesh(baseGeo, houseBaseMat);
@@ -310,11 +256,11 @@ function _createSampleHouse(gw, gd) {
   baseMesh.castShadow = true;
   houseGroup.add(baseMesh);
 
-  // Techo (pirámide / cono de 4 lados)
-  const roofGeo = new THREE.ConeGeometry(Math.max(baseW, baseD) * 0.6, 2, 4);
+  // Techo a 4 aguas
+  const roofGeo = new THREE.ConeGeometry(Math.max(baseW, baseD) * 0.65, 2.2, 4);
   const roofMesh = new THREE.Mesh(roofGeo, houseRoofMat);
   roofMesh.rotation.y = Math.PI / 4;
-  roofMesh.position.y = baseH + 1.0;
+  roofMesh.position.y = baseH + 1.1;
   roofMesh.castShadow = true;
   houseGroup.add(roofMesh);
 
