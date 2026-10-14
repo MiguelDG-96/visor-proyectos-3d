@@ -4,7 +4,7 @@
  * Conecta Three.js con el sistema de UI.
  */
 import * as THREE from 'three';
-import { getCamera, getRenderer } from './scene.js';
+import { getCamera, getRenderer, requestShadowUpdate } from './scene.js';
 import { getLotMeshes, setLotHovered, setLotSelected } from './lots.js';
 import { showTooltip, hideTooltip, showLotPanel, hideLotPanel } from './ui.js';
 import { isWalkModeActive } from './walk.js';
@@ -116,8 +116,10 @@ function _onClick(e) {
     setLotSelected(hit, true);
     setLotHovered(hit, false); // limpiar hover al seleccionar
     showLotPanel(hit.userData.lot);
+    requestShadowUpdate();
   } else {
     hideLotPanel();
     hideTooltip();
+    requestShadowUpdate();
   }
 }

@@ -3,31 +3,33 @@
  * Iluminación de la escena: sol, ambiente, hemisférica.
  */
 import * as THREE from 'three';
-import { getScene } from './scene.js';
-import { updateTerrainDayNight } from './terrain.js';
+import { getScene, requestShadowUpdate } from './scene.js';
+import { updateTerrainDayNight, streetBulbMat } from './terrain.js';
 
 export function setupLighting() {
   const scene = getScene();
+  const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
 
   // ── Luz ambiental ────────────────────────────
   // Relleno suave uniforme
-  const ambient = new THREE.AmbientLight(0xffffff, 0.55);
+  const ambient = new THREE.AmbientLight(0xffffff, 0.7);
   scene.add(ambient);
 
   // ── Luz hemisférica ──────────────────────────
   // Cielo azul / suelo verde — da profundidad sin sombras
-  const hemi = new THREE.HemisphereLight(0xc8dff5, 0x3a6640, 0.9);
+  const hemi = new THREE.HemisphereLight(0xdbeafe, 0x4a7c3f, 0.95);
   hemi.position.set(0, 50, 0);
   scene.add(hemi);
 
   // ── Sol (DirectionalLight) ───────────────────
-  const sun = new THREE.DirectionalLight(0xfff5e0, 1.8);
+  const sun = new THREE.DirectionalLight(0xfffaed, 2.0);
   sun.position.set(250, 450, 200);
   sun.castShadow = true;
 
-  // Configuración de shadow map abarcando la extensión completa de la urbanización
-  sun.shadow.mapSize.width  = 2048;
-  sun.shadow.mapSize.height = 2048;
+  // Configuración de shadow map: 1024 en móvil (ahorra 75% memoria VRAM) y 2048 en desktop
+  const shadowRes = isMobile ? 1024 : 2048;
+  sun.shadow.mapSize.width  = shadowRes;
+  sun.shadow.mapSize.height = shadowRes;
   sun.shadow.camera.near    = 10;
   sun.shadow.camera.far     = 1200;
   sun.shadow.camera.left    = -450;
@@ -92,15 +94,11 @@ export function toggleDayNight() {
   // Actualizar suelo y calles a tono diurno / nocturno
   updateTerrainDayNight(_isNight);
   
-  // Encender/apagar luces de los postes
-  scene.traverse(obj => {
-    if (obj.userData.isStreetLight) {
-      obj.visible = _isNight;
-    }
-    if (obj.userData.isStreetLightBulb) {
-      obj.material.emissiveIntensity = _isNight ? 1.0 : 0.0;
-    }
-  });
+  // Encender/apagar bombillas de postes eficientemente (1 sola asignación)
+  streetBulbMat.emissiveIntensity = _isNight ? 1.0 : 0.0;
+
+  // Actualizar el mapa de sombras una sola vez para la nueva iluminación
+  requestShadowUpdate();
   
   return _isNight;
 }

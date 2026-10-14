@@ -6,7 +6,7 @@ import { initScene, getScene, getCamera, getRenderer } from './scene.js';
 import { setupCamera, getControls, resetCamera, toggleTourMode } from './camera.js';
 import { setupLighting, toggleDayNight }               from './lighting.js';
 import { createTerrain }                               from './terrain.js';
-import { createAllManzanas, filterLots, animateLots }  from './lots.js';
+import { createAllManzanas, filterLots, animateLots, updateLabelLOD } from './lots.js';
 import { setupInteraction, updateInteraction }           from './interaction.js';
 import { initUI, updateStats }                         from './ui.js';
 import { initPerformance, tickPerformance }            from './performance.js';
@@ -133,36 +133,85 @@ async function main() {
 }
 
 // ══════════════════════════════════════════════
-// Loop de render
+// Loop de render con Ahorro Inteligente de Energía e Idle Throttling
 // ══════════════════════════════════════════════
 function _startRenderLoop() {
   const scene    = getScene();
   const camera   = getCamera();
   const renderer = getRenderer();
 
+  let framesSinceLOD = 0;
+  let lastCamX = 0, lastCamY = 0, lastCamZ = 0;
+  let lastRotX = 0, lastRotY = 0, lastRotZ = 0;
+  let idleCounter = 0;
+
   function animate() {
     requestAnimationFrame(animate);
 
-    // Actualizar controles dependiendo del modo
-    if (isWalkModeActive()) {
-      updateWalkMode();
-    } else {
-      const controls = getControls();
-      if (controls) controls.update();
+    // 1. LOD de etiquetas de lotes cada 10 frames (a >220m de altura oculta 717 sprites ahorrando draw calls)
+    framesSinceLOD++;
+    if (framesSinceLOD > 10) {
+      framesSinceLOD = 0;
+      updateLabelLOD(camera.position.y);
     }
 
-    // Animación suave de lotes
-    animateLots();
+    // 2. Actualizar controles dependiendo del modo
+    let controlsActive = false;
+    if (isWalkModeActive()) {
+      updateWalkMode();
+      controlsActive = true;
+    } else {
+      const controls = getControls();
+      if (controls) {
+        controls.update();
+        if (controls.autoRotate) controlsActive = true;
+      }
+    }
 
-    // Actualizar interacción si estamos caminando
+    // 3. Animación de lotes (devuelve true solo si hay algún lote activo en transición)
+    const lotsAnimating = animateLots();
+
+    // 4. Actualizar interacción si estamos caminando
     updateInteraction();
 
-    // Monitor de rendimiento
+    // 5. Monitor de rendimiento (FPS)
     tickPerformance();
 
-    // Render
-    renderer.render(scene, camera);
+    // 6. Detección de movimiento de cámara para reposo inteligente
+    const camMoved = Math.abs(camera.position.x - lastCamX) > 0.001 ||
+                     Math.abs(camera.position.y - lastCamY) > 0.001 ||
+                     Math.abs(camera.position.z - lastCamZ) > 0.001 ||
+                     Math.abs(camera.rotation.x - lastRotX) > 0.0001 ||
+                     Math.abs(camera.rotation.y - lastRotY) > 0.0001 ||
+                     Math.abs(camera.rotation.z - lastRotZ) > 0.0001;
+
+    lastCamX = camera.position.x;
+    lastCamY = camera.position.y;
+    lastCamZ = camera.position.z;
+    lastRotX = camera.rotation.x;
+    lastRotY = camera.rotation.y;
+    lastRotZ = camera.rotation.z;
+
+    const isBusy = controlsActive || lotsAnimating || camMoved;
+
+    if (isBusy) {
+      idleCounter = 0;
+      renderer.render(scene, camera);
+    } else {
+      idleCounter++;
+      // Renderiza hasta 5 frames posteriores al cese de movimiento para estabilización perfecta
+      if (idleCounter <= 5) {
+        renderer.render(scene, camera);
+      }
+      // En reposo absoluto (idleCounter > 5), NO satura la GPU ni calienta la laptop/móvil
+    }
   }
+
+  // Reactivar renderizado al primer toque, clic, tecla o rueda del usuario
+  window.addEventListener('pointerdown', () => { idleCounter = 0; }, { passive: true });
+  window.addEventListener('wheel',       () => { idleCounter = 0; }, { passive: true });
+  window.addEventListener('touchstart',  () => { idleCounter = 0; }, { passive: true });
+  window.addEventListener('keydown',     () => { idleCounter = 0; }, { passive: true });
 
   animate();
 }

@@ -116,11 +116,8 @@ export function createTerrain(bounds, infra = {}) {
   return ground;
 }
 
-/** Planta árboles decorativos en las vías periféricas y áreas libres */
+/** Planta árboles decorativos con InstancedMesh (2 draw calls en lugar de 120) */
 function _plantDecorativeTrees(parent) {
-  const treeGroup = new THREE.Group();
-  treeGroup.name = 'arboles_decorativos';
-
   const trunkGeo = new THREE.CylinderGeometry(0.35, 0.45, 2.4, 5);
   const trunkMat = new THREE.MeshLambertMaterial({ color: 0x5c4033 });
   const leavesGeo = new THREE.ConeGeometry(2.8, 5.5, 6);
@@ -128,7 +125,7 @@ function _plantDecorativeTrees(parent) {
 
   // Distribución perimetral de árboles
   const positions = [];
-  // Borde Oeste
+  // Borde Oeste y Este
   for (let z = -350; z <= 350; z += 40) {
     positions.push({ x: -230, z });
     positions.push({ x: 250, z });
@@ -139,26 +136,48 @@ function _plantDecorativeTrees(parent) {
     positions.push({ x, z: 380 });
   }
 
-  positions.forEach(pos => {
-    const trunk = new THREE.Mesh(trunkGeo, trunkMat);
-    trunk.position.set(pos.x, 1.2, pos.z);
-    trunk.castShadow = true;
-    trunk.receiveShadow = true;
-    treeGroup.add(trunk);
+  const count = positions.length;
+  const trunkInst = new THREE.InstancedMesh(trunkGeo, trunkMat, count);
+  const leavesInst = new THREE.InstancedMesh(leavesGeo, leavesMat, count);
+  trunkInst.receiveShadow = true;
+  leavesInst.receiveShadow = true;
 
-    const leaves = new THREE.Mesh(leavesGeo, leavesMat);
-    leaves.position.set(pos.x, 4.0, pos.z);
-    leaves.scale.set(0.9 + Math.random() * 0.3, 0.9 + Math.random() * 0.3, 0.9 + Math.random() * 0.3);
-    leaves.rotation.y = Math.random() * Math.PI;
-    leaves.castShadow = true;
-    leaves.receiveShadow = true;
-    treeGroup.add(leaves);
+  const dummy = new THREE.Object3D();
+  positions.forEach((pos, i) => {
+    // Tronco
+    dummy.position.set(pos.x, 1.2, pos.z);
+    dummy.scale.set(1, 1, 1);
+    dummy.rotation.set(0, 0, 0);
+    dummy.updateMatrix();
+    trunkInst.setMatrixAt(i, dummy.matrix);
+
+    // Copa de árbol
+    const s = 0.9 + (i % 5) * 0.08;
+    dummy.position.set(pos.x, 4.0, pos.z);
+    dummy.scale.set(s, s, s);
+    dummy.rotation.set(0, (i * 0.7) % Math.PI, 0);
+    dummy.updateMatrix();
+    leavesInst.setMatrixAt(i, dummy.matrix);
   });
 
+  trunkInst.instanceMatrix.needsUpdate = true;
+  leavesInst.instanceMatrix.needsUpdate = true;
+
+  const treeGroup = new THREE.Group();
+  treeGroup.name = 'arboles_decorativos';
+  treeGroup.add(trunkInst);
+  treeGroup.add(leavesInst);
   parent.add(treeGroup);
 }
 
-/** Agrega postes de luz con bombillas que se encienden de noche */
+// Material compartido único para todas las bombillas de postes
+export const streetBulbMat = new THREE.MeshStandardMaterial({
+  color: 0xffffff,
+  emissive: 0xffe066,
+  emissiveIntensity: 0.0
+});
+
+/** Agrega postes de luz con bombillas eficientes */
 function _plantStreetLights(parent) {
   const lightsGroup = new THREE.Group();
   lightsGroup.name = 'postes_luz';
@@ -166,20 +185,15 @@ function _plantStreetLights(parent) {
   const poleGeo = new THREE.CylinderGeometry(0.12, 0.15, 6.0, 6);
   const poleMat = new THREE.MeshLambertMaterial({ color: 0x475569 });
   const bulbGeo = new THREE.SphereGeometry(0.35, 8, 8);
-  const bulbMat = new THREE.MeshStandardMaterial({
-    color: 0xffffff,
-    emissive: 0xffe066,
-    emissiveIntensity: 0.0
-  });
 
-  // Postes a lo largo del eje central
+  // Postes a lo largo de los ejes viales principales
   for (let z = -320; z <= 320; z += 65) {
     [-120, 0, 140].forEach(x => {
       const pole = new THREE.Mesh(poleGeo, poleMat);
       pole.position.set(x, 3.0, z);
       lightsGroup.add(pole);
 
-      const bulb = new THREE.Mesh(bulbGeo, bulbMat.clone());
+      const bulb = new THREE.Mesh(bulbGeo, streetBulbMat);
       bulb.position.set(x, 6.1, z);
       bulb.userData.isStreetLightBulb = true;
       lightsGroup.add(bulb);

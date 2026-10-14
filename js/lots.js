@@ -15,9 +15,24 @@ const COLORS = {
   vendido:    0xef4444, // Rojo
 };
 
-// Materiales para casitas de muestra en lotes vendidos
+// Materiales compartidos para casitas de muestra en lotes vendidos
 const houseBaseMat = new THREE.MeshLambertMaterial({ color: 0xf8fafc });
 const houseRoofMat = new THREE.MeshLambertMaterial({ color: 0xb91c1c });
+
+// Material compartido para bordes de lotes (ahorra 717 instanciaciones)
+const _sharedEdgeMat = new THREE.LineBasicMaterial({
+  color: 0x000000,
+  transparent: true,
+  opacity: 0.28
+});
+
+// Cache de materiales de texto y control de LOD (ahorra ~670 texturas y 717 draw calls)
+const _labelMatCache = new Map();
+const _labelMeshes   = [];
+let _labelsVisible   = true;
+
+// Set de meshes activos animándose (evita iterar 717 lotes cada frame)
+const _activeAnimatingMeshes = new Set();
 
 let _lotMeshes = [];
 let _urbGroup  = null;
@@ -133,10 +148,10 @@ function _buildLotMesh(lot, cx, cz) {
   mesh.receiveShadow = true;
   mesh.castShadow = true;
 
-  // Bordes del lote para resaltar linderos
+  // Bordes del lote para resaltar linderos (reutiliza el mismo material compartido)
   mesh.add(new THREE.LineSegments(
     new THREE.EdgesGeometry(geo),
-    new THREE.LineBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.28 })
+    _sharedEdgeMat
   ));
 
   // Si el lote está vendido, agregar una casita 3D estilizada
@@ -148,7 +163,7 @@ function _buildLotMesh(lot, cx, cz) {
     mesh.add(house);
   }
 
-  // Etiqueta con número de lote (Sprite 2D siempre mirando a la cámara)
+  // Etiqueta con número de lote (Sprite 2D con textura cacheada)
   mesh.add(_makeLabel(lot.numero));
 
   // Metadatos para interacción y animación
@@ -166,9 +181,12 @@ function _buildLotMesh(lot, cx, cz) {
 }
 
 /**
- * Crea una etiqueta Sprite circular con el número de lote
+ * Obtiene o crea un material compartido para el número de lote (reutiliza CanvasTextures)
  */
-function _makeLabel(num) {
+function _getLabelMaterial(num) {
+  const key = String(num);
+  if (_labelMatCache.has(key)) return _labelMatCache.get(key);
+
   const sz = 128;
   const cv = document.createElement('canvas');
   cv.width = cv.height = sz;
@@ -188,18 +206,45 @@ function _makeLabel(num) {
   ctx.font = `bold ${sz * 0.42}px Inter, Arial, sans-serif`;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.fillText(String(num), sz / 2, sz / 2);
+  ctx.fillText(key, sz / 2, sz / 2);
 
-  const spr = new THREE.Sprite(
-    new THREE.SpriteMaterial({
-      map: new THREE.CanvasTexture(cv),
-      transparent: true,
-      depthTest: false
-    })
-  );
+  const tex = new THREE.CanvasTexture(cv);
+  tex.minFilter = THREE.LinearFilter;
+  tex.generateMipmaps = false;
+
+  const mat = new THREE.SpriteMaterial({
+    map: tex,
+    transparent: true,
+    depthTest: false
+  });
+  _labelMatCache.set(key, mat);
+  return mat;
+}
+
+/**
+ * Crea una etiqueta Sprite circular con el número de lote reutilizando textura
+ */
+function _makeLabel(num) {
+  const spr = new THREE.Sprite(_getLabelMaterial(num));
   spr.scale.set(3.6, 3.6, 1);
   spr.position.set(0, LOT_HEIGHT + 0.8, 0);
+  _labelMeshes.push(spr);
   return spr;
+}
+
+/**
+ * Controla la visibilidad de las 717 etiquetas por nivel de detalle (LOD).
+ * A más de 220m de altura, los números individuales no son legibles y se ocultan,
+ * ahorrando 717 draw calls de golpe en vista aérea.
+ */
+export function updateLabelLOD(cameraAltitude) {
+  const shouldBeVisible = cameraAltitude < 220;
+  if (_labelsVisible !== shouldBeVisible) {
+    _labelsVisible = shouldBeVisible;
+    for (let i = 0; i < _labelMeshes.length; i++) {
+      _labelMeshes[i].visible = shouldBeVisible;
+    }
+  }
 }
 
 /**
@@ -217,6 +262,7 @@ export function setLotHovered(mesh, hovered) {
   if (!mesh?.userData?.type || mesh.userData._isSelected) return;
   mesh.userData.targetY = hovered ? mesh.userData.baseY + 1.2 : mesh.userData.baseY;
   mesh.userData.targetEmissive = hovered ? 0.30 : 0;
+  _activeAnimatingMeshes.add(mesh);
 }
 
 export function setLotSelected(mesh, selected) {
@@ -224,20 +270,38 @@ export function setLotSelected(mesh, selected) {
   mesh.userData._isSelected = selected;
   mesh.userData.targetY = selected ? mesh.userData.baseY + 2.8 : mesh.userData.baseY;
   mesh.userData.targetEmissive = selected ? 0.65 : 0;
+  _activeAnimatingMeshes.add(mesh);
 }
 
+/**
+ * Anima únicamente los meshes que están en transición (cero CPU en reposo)
+ * @returns {boolean} true si hubo animación activa en este frame
+ */
 export function animateLots() {
-  const lf = 0.12;
-  _lotMeshes.forEach(mesh => {
-    if (!mesh.userData?.type) return;
+  if (_activeAnimatingMeshes.size === 0) return false;
+  const lf = 0.15;
+  for (const mesh of _activeAnimatingMeshes) {
+    let stillMoving = false;
     const dy = mesh.userData.targetY - mesh.position.y;
-    if (Math.abs(dy) > 0.001) mesh.position.y += dy * lf;
+    if (Math.abs(dy) > 0.005) {
+      mesh.position.y += dy * lf;
+      stillMoving = true;
+    } else {
+      mesh.position.y = mesh.userData.targetY;
+    }
     const de = mesh.userData.targetEmissive - mesh.material.emissiveIntensity;
-    if (Math.abs(de) > 0.001) {
+    if (Math.abs(de) > 0.005) {
       mesh.material.emissiveIntensity += de * lf;
       mesh.material.emissive.setHex(0xffffff);
+      stillMoving = true;
+    } else {
+      mesh.material.emissiveIntensity = mesh.userData.targetEmissive;
     }
-  });
+    if (!stillMoving) {
+      _activeAnimatingMeshes.delete(mesh);
+    }
+  }
+  return true;
 }
 
 /**
