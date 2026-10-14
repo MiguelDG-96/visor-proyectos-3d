@@ -99,7 +99,8 @@ async function main() {
       }
     });
 
-    // 8.7 Modo Noche
+    // 8.7 Modo Día / Noche (Inicia en modo día / claro)
+    document.body.classList.add('light-mode');
     window.addEventListener('toggleDayNight', () => {
       const isNight = toggleDayNight();
       const btn = $('btn-day-night');
@@ -107,9 +108,11 @@ async function main() {
         if (isNight) {
           btn.classList.add('active');
           btn.textContent = '☀️'; // Cambia ícono a sol
+          document.body.classList.remove('light-mode');
         } else {
           btn.classList.remove('active');
           btn.textContent = '🌙'; // Cambia ícono a luna
+          document.body.classList.add('light-mode');
         }
       }
     });

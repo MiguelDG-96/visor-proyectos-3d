@@ -4,6 +4,7 @@
  */
 import * as THREE from 'three';
 import { getScene } from './scene.js';
+import { updateTerrainDayNight } from './terrain.js';
 
 export function setupLighting() {
   const scene = getScene();
@@ -73,20 +74,23 @@ export function toggleDayNight() {
     }
     if (fill) fill.intensity = 0.35; // Relleno lateral sin sombras negras absolutas
   } else {
-    // Día — Máxima visibilidad y nitidez sin niebla invasiva
-    scene.background.setHex(0x87b4d0);
-    scene.fog.color.setHex(0x87b4d0);
+    // Día — Máxima luminosidad, cielo azul radiante y nitidez
+    scene.background.setHex(0x7ec8f8);
+    scene.fog.color.setHex(0x7ec8f8);
     scene.fog.near = 1600;
     scene.fog.far = 3800;
 
-    if (ambient) ambient.intensity = 0.6;
-    if (hemi) hemi.intensity = 0.95;
+    if (ambient) ambient.intensity = 0.85;
+    if (hemi) hemi.intensity = 1.0;
     if (sun) {
-      sun.color.setHex(0xfff5e0);
-      sun.intensity = 1.8;
+      sun.color.setHex(0xfffaed);
+      sun.intensity = 2.0;
     }
-    if (fill) fill.intensity = 0.4;
+    if (fill) fill.intensity = 0.5;
   }
+  
+  // Actualizar suelo y calles a tono diurno / nocturno
+  updateTerrainDayNight(_isNight);
   
   // Encender/apagar luces de los postes
   scene.traverse(obj => {

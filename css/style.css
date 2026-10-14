@@ -501,3 +501,107 @@ html, body {
   box-shadow: 0 8px 24px rgba(59,130,246,0.35);
 }
 .btn-contactar:active { transform: translateY(0); }
+
+/* ══════════════════════════════════════════════
+   TEMA CLARO / MODO DÍA
+══════════════════════════════════════════════ */
+body.light-mode #header {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 100%);
+}
+body.light-mode .project-name {
+  color: #0f172a;
+}
+body.light-mode .project-badge {
+  background: rgba(37, 99, 235, 0.12);
+  border-color: rgba(37, 99, 235, 0.28);
+  color: #1d4ed8;
+}
+body.light-mode .stat-chip {
+  background: rgba(255, 255, 255, 0.92);
+  border-color: rgba(0, 0, 0, 0.08);
+  color: #475569;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+body.light-mode .stat-chip strong {
+  color: #0f172a;
+}
+body.light-mode #controls-bar {
+  background: rgba(255, 255, 255, 0.92);
+  border-color: rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+body.light-mode .ctrl-btn:not(.active) {
+  color: #475569;
+}
+body.light-mode .ctrl-btn:not(.active):hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: #0f172a;
+}
+body.light-mode .ctrl-divider {
+  background: rgba(0, 0, 0, 0.1);
+}
+body.light-mode #legend {
+  background: rgba(255, 255, 255, 0.92);
+  border-color: rgba(0, 0, 0, 0.1);
+  color: #334155;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+}
+body.light-mode #perf-monitor {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(0, 0, 0, 0.1);
+  color: #475569;
+}
+body.light-mode #lot-panel {
+  background: rgba(255, 255, 255, 0.96);
+  border-color: rgba(0, 0, 0, 0.1);
+  color: #1e293b;
+  box-shadow: -8px 0 32px rgba(0, 0, 0, 0.12);
+}
+body.light-mode .panel-codigo {
+  color: #0f172a;
+}
+body.light-mode .panel-close-btn {
+  color: #64748b;
+  background: rgba(0, 0, 0, 0.04);
+}
+body.light-mode .panel-close-btn:hover {
+  background: rgba(0, 0, 0, 0.08);
+  color: #0f172a;
+}
+body.light-mode .field-label {
+  color: #64748b;
+}
+body.light-mode .field-val {
+  color: #0f172a;
+}
+body.light-mode .panel-price-box {
+  background: rgba(241, 245, 249, 0.9);
+  border-color: rgba(0, 0, 0, 0.06);
+}
+body.light-mode .price-tag {
+  color: #64748b;
+}
+body.light-mode .price-amount {
+  color: #0f172a;
+}
+body.light-mode .price-m2 {
+  color: #64748b;
+}
+body.light-mode .via-tag {
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.08);
+  color: #475569;
+}
+body.light-mode #tooltip {
+  background: rgba(255, 255, 255, 0.96);
+  border-color: rgba(0, 0, 0, 0.12);
+  color: #0f172a;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+body.light-mode .tt-title {
+  color: #0f172a;
+}
+body.light-mode .tt-sub {
+  color: #64748b;
+}
+

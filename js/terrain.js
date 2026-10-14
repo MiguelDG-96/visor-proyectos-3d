@@ -4,13 +4,27 @@
 import * as THREE from 'three';
 import { getScene } from './scene.js';
 
+let _groundMat  = null;
+let _asphaltMat = null;
+
+export function updateTerrainDayNight(isNight) {
+  if (!_groundMat || !_asphaltMat) return;
+  if (isNight) {
+    _groundMat.color.setHex(0x142216);  // Césped nocturno
+    _asphaltMat.color.setHex(0x19202a); // Asfalto nocturno
+  } else {
+    _groundMat.color.setHex(0x437a38);  // Césped verde tropical vivo y luminoso de día
+    _asphaltMat.color.setHex(0x525e70); // Asfalto gris urbano diurno limpio
+  }
+}
+
 export function createTerrain(bounds, infra = {}) {
   const scene = getScene();
 
   // 1. Suelo base amplio (Terreno natural tropical que se funde en el horizonte)
   const groundGeo = new THREE.PlaneGeometry(3600, 3600);
-  const groundMat = new THREE.MeshLambertMaterial({ color: 0x1e2e1e }); // Verde natural oscuro
-  const ground = new THREE.Mesh(groundGeo, groundMat);
+  _groundMat = new THREE.MeshLambertMaterial({ color: 0x437a38 }); // Verde tropical vivo para día
+  const ground = new THREE.Mesh(groundGeo, _groundMat);
   ground.rotation.x = -Math.PI / 2;
   ground.position.y = -0.05;
   ground.receiveShadow = true;
@@ -18,8 +32,8 @@ export function createTerrain(bounds, infra = {}) {
 
   // 2. Base de asfalto urbana bajo la lotización
   const asphaltGeo = new THREE.PlaneGeometry(750, 1050);
-  const asphaltMat = new THREE.MeshLambertMaterial({ color: 0x27272a }); // Asfalto gris oscuro
-  const asphalt = new THREE.Mesh(asphaltGeo, asphaltMat);
+  _asphaltMat = new THREE.MeshLambertMaterial({ color: 0x525e70 }); // Asfalto gris urbano diurno
+  const asphalt = new THREE.Mesh(asphaltGeo, _asphaltMat);
   asphalt.rotation.x = -Math.PI / 2;
   asphalt.position.set(20, -0.02, 0);
   asphalt.receiveShadow = true;
