@@ -17,16 +17,18 @@ export function initScene(canvas) {
   // ── Escena ──────────────────────────────────
   _scene = new THREE.Scene();
   _scene.background = new THREE.Color(0x87b4d0);
-  _scene.fog = new THREE.FogExp2(0x87b4d0, 0.007);
+  // Niebla lineal atmosférica de horizonte (cero niebla de 0 a 1600m para máxima nitidez de lotes)
+  _scene.fog = new THREE.Fog(0x87b4d0, 1600, 3800);
 
   // ── Cámara ──────────────────────────────────
+  // near = 1.0 (evita pérdida de precisión Z) y far = 4500 (abarca todo el proyecto y zoom out)
   _camera = new THREE.PerspectiveCamera(
     45,
     window.innerWidth / window.innerHeight,
-    0.1,
-    600
+    1.0,
+    4500
   );
-  _camera.position.set(0, 80, 60);
+  _camera.position.set(0, 380, 360);
 
   // ── Renderer ────────────────────────────────
   _renderer = new THREE.WebGLRenderer({
@@ -34,6 +36,7 @@ export function initScene(canvas) {
     antialias: true,
     powerPreference: 'high-performance',
     alpha: false,
+    logarithmicDepthBuffer: true, // Precisión de profundidad uniforme para escalas urbanas (sin z-fighting)
   });
   _renderer.setSize(window.innerWidth, window.innerHeight);
   _renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));

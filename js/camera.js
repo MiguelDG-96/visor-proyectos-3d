@@ -24,7 +24,7 @@ export function setupCamera(center) {
   _controls.enableDamping = true;
   _controls.dampingFactor = 0.08;
   _controls.minDistance = 5;
-  _controls.maxDistance = 1500;
+  _controls.maxDistance = 2500;
   _controls.maxPolarAngle = Math.PI / 2.05;
   _controls.screenSpacePanning = false;
   _controls.update();

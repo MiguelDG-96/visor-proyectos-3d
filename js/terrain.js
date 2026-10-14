@@ -7,8 +7,8 @@ import { getScene } from './scene.js';
 export function createTerrain(bounds, infra = {}) {
   const scene = getScene();
 
-  // 1. Suelo base amplio (Terreno natural tropical)
-  const groundGeo = new THREE.PlaneGeometry(1600, 1600);
+  // 1. Suelo base amplio (Terreno natural tropical que se funde en el horizonte)
+  const groundGeo = new THREE.PlaneGeometry(3600, 3600);
   const groundMat = new THREE.MeshLambertMaterial({ color: 0x1e2e1e }); // Verde natural oscuro
   const ground = new THREE.Mesh(groundGeo, groundMat);
   ground.rotation.x = -Math.PI / 2;

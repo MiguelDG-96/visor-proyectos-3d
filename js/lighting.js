@@ -21,26 +21,26 @@ export function setupLighting() {
 
   // ── Sol (DirectionalLight) ───────────────────
   const sun = new THREE.DirectionalLight(0xfff5e0, 1.8);
-  sun.position.set(60, 100, 40);
+  sun.position.set(250, 450, 200);
   sun.castShadow = true;
 
-  // Configuración de shadow map — calidad/rendimiento balanceado
+  // Configuración de shadow map abarcando la extensión completa de la urbanización
   sun.shadow.mapSize.width  = 2048;
   sun.shadow.mapSize.height = 2048;
-  sun.shadow.camera.near    = 1;
-  sun.shadow.camera.far     = 300;
-  sun.shadow.camera.left    = -120;
-  sun.shadow.camera.right   = 120;
-  sun.shadow.camera.top     = 120;
-  sun.shadow.camera.bottom  = -120;
-  sun.shadow.bias           = -0.0008;
+  sun.shadow.camera.near    = 10;
+  sun.shadow.camera.far     = 1200;
+  sun.shadow.camera.left    = -450;
+  sun.shadow.camera.right   = 450;
+  sun.shadow.camera.top     = 500;
+  sun.shadow.camera.bottom  = -500;
+  sun.shadow.bias           = -0.0005;
   sun.shadow.radius         = 2; // suavizado PCF
   scene.add(sun);
 
   // ── Luz de relleno (fill) ────────────────────
   // Contraluz suave para evitar zonas negras
-  const fill = new THREE.DirectionalLight(0xddeeff, 0.35);
-  fill.position.set(-40, 30, -20);
+  const fill = new THREE.DirectionalLight(0xddeeff, 0.4);
+  fill.position.set(-150, 100, -100);
   scene.add(fill);
 
   return { ambient, hemi, sun, fill };
@@ -59,30 +59,33 @@ export function toggleDayNight() {
   
   // Cambiar entorno
   if (_isNight) {
-    // Noche - Iluminación profesional de luna a gran escala
-    scene.background.setHex(0x111b2b); // Fondo ligeramente más claro
-    scene.fog.color.setHex(0x111b2b);
-    scene.fog.density = 0.002; // Niebla muy tenue para que no oscurezca el proyecto de lejos
+    // Noche - Iluminación profesional de luna a gran escala (sin capas que corten la vista)
+    scene.background.setHex(0x0f172a);
+    scene.fog.color.setHex(0x0f172a);
+    scene.fog.near = 1600;
+    scene.fog.far = 3800;
     
-    if (ambient) ambient.intensity = 0.4; // Luz de relleno general alta
-    if (hemi) hemi.intensity = 0.5; // Resalta detalles desde arriba
+    if (ambient) ambient.intensity = 0.45; // Luz de relleno general alta
+    if (hemi) hemi.intensity = 0.55; // Resalta detalles desde arriba
     if (sun) {
       sun.color.setHex(0xaaccff); // Luz de luna plateada/azulada clara
-      sun.intensity = 1.0; // Luna con mucha fuerza global
+      sun.intensity = 1.1; // Luna con mucha fuerza global
     }
-    if (fill) fill.intensity = 0.3; // Relleno lateral para que no haya sombras negras absolutas
+    if (fill) fill.intensity = 0.35; // Relleno lateral sin sombras negras absolutas
   } else {
-    // Día
+    // Día — Máxima visibilidad y nitidez sin niebla invasiva
     scene.background.setHex(0x87b4d0);
     scene.fog.color.setHex(0x87b4d0);
-    scene.fog.density = 0.007;
-    if (ambient) ambient.intensity = 0.55;
-    if (hemi) hemi.intensity = 0.9;
+    scene.fog.near = 1600;
+    scene.fog.far = 3800;
+
+    if (ambient) ambient.intensity = 0.6;
+    if (hemi) hemi.intensity = 0.95;
     if (sun) {
       sun.color.setHex(0xfff5e0);
       sun.intensity = 1.8;
     }
-    if (fill) fill.intensity = 0.35;
+    if (fill) fill.intensity = 0.4;
   }
   
   // Encender/apagar luces de los postes
