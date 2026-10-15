@@ -4,73 +4,96 @@
 import * as THREE from 'three';
 import { getScene } from './scene.js';
 
-let _groundMat  = null;
-let _asphaltMat = null;
-let _satMesh    = null;
-let _satVisible = true;
+let _groundMat       = null;
+let _asphaltMat      = null;
+let _asphaltMesh     = null;
+let _satRegionalMesh = null;
+let _satDetailMesh   = null;
+let _satVisible      = true;
 
 export function updateTerrainDayNight(isNight) {
-  if (!_groundMat || !_asphaltMat) return;
   if (isNight) {
-    _groundMat.color.setHex(0x142216);  // Césped nocturno
-    _asphaltMat.color.setHex(0x19202a); // Asfalto nocturno
-    if (_satMesh) _satMesh.material.opacity = 0.55; // Satélite tenue en noche
+    if (_groundMat)       _groundMat.color.setHex(0x0f1810);
+    if (_asphaltMat)      _asphaltMat.color.setHex(0x19202a);
+    if (_satRegionalMesh) _satRegionalMesh.material.opacity = 0.55;
+    if (_satDetailMesh)   _satDetailMesh.material.opacity   = 0.55;
   } else {
-    _groundMat.color.setHex(0x437a38);  // Césped verde tropical vivo y luminoso de día
-    _asphaltMat.color.setHex(0x525e70); // Asfalto gris urbano diurno limpio
-    if (_satMesh) _satMesh.material.opacity = 0.98; // Satélite nítido en día
+    if (_groundMat)       _groundMat.color.setHex(0x1a2e1d); // Verde bosque profundo que armoniza con la selva
+    if (_asphaltMat)      _asphaltMat.color.setHex(0x525e70);
+    if (_satRegionalMesh) _satRegionalMesh.material.opacity = 0.98;
+    if (_satDetailMesh)   _satDetailMesh.material.opacity   = 0.98;
   }
 }
 
 export function toggleSatelliteLayer() {
-  if (_satMesh) {
-    _satVisible = !_satVisible;
-    _satMesh.visible = _satVisible;
-  }
+  _satVisible = !_satVisible;
+  if (_satRegionalMesh) _satRegionalMesh.visible = _satVisible;
+  if (_satDetailMesh)   _satDetailMesh.visible   = _satVisible;
+  if (_asphaltMesh)     _asphaltMesh.visible     = !_satVisible; // Oculta el bloque gris cuando el satélite está activo
   return _satVisible;
 }
 
 export function createTerrain(bounds, infra = {}) {
   const scene = getScene();
 
-  // 1. Suelo base amplio (Terreno natural tropical que se funde en el horizonte)
+  // 1. Suelo base amplio (3600m x 3600m) en verde bosque natural que se funde en el horizonte
   const groundGeo = new THREE.PlaneGeometry(3600, 3600);
-  _groundMat = new THREE.MeshLambertMaterial({ color: 0x437a38 }); // Verde tropical vivo para día
+  _groundMat = new THREE.MeshLambertMaterial({ color: 0x1a2e1d });
   const ground = new THREE.Mesh(groundGeo, _groundMat);
   ground.rotation.x = -Math.PI / 2;
-  ground.position.y = -0.05;
+  ground.position.y = -0.06;
   ground.receiveShadow = true;
   scene.add(ground);
 
-  // 1.5 Capa Satelital de Google Earth Georreferenciada (Chávez Pata en UTM 18S)
   const textureLoader = new THREE.TextureLoader();
-  textureLoader.load('./assets/images/satelite-chavez-pata.png', (satTex) => {
-    satTex.colorSpace = THREE.SRGBColorSpace;
-    satTex.minFilter = THREE.LinearMipmapLinearFilter;
 
-    // Dimensiones georreferenciadas calibradas a resolución Web Mercator / UTM (760.18m x 760.18m)
-    const satGeo = new THREE.PlaneGeometry(760.18, 760.18);
-    const satMat = new THREE.MeshBasicMaterial({
-      map: satTex,
+  // 1.5 Capa Satelital Regional Amplia (Zoom 15: 3,040m x 3,040m — Río Mayo, bosques, colinas y carreteras)
+  textureLoader.load('./assets/images/satelite-regional-z15.png', (regTex) => {
+    regTex.colorSpace = THREE.SRGBColorSpace;
+    regTex.minFilter = THREE.LinearMipmapLinearFilter;
+
+    const regGeo = new THREE.PlaneGeometry(3040.7, 3040.7);
+    const regMat = new THREE.MeshBasicMaterial({
+      map: regTex,
       transparent: true,
       opacity: 0.98
     });
-    _satMesh = new THREE.Mesh(satGeo, satMat);
-    _satMesh.rotation.x = -Math.PI / 2;
-    _satMesh.position.set(10.76, 0.012, -6.37);
-    _satMesh.receiveShadow = true;
-    _satMesh.name = 'capa_satelital_google';
-    scene.add(_satMesh);
+    _satRegionalMesh = new THREE.Mesh(regGeo, regMat);
+    _satRegionalMesh.rotation.x = -Math.PI / 2;
+    _satRegionalMesh.position.set(10.76, 0.005, -6.37);
+    _satRegionalMesh.receiveShadow = true;
+    _satRegionalMesh.name = 'satelite_regional_3km';
+    scene.add(_satRegionalMesh);
   });
 
-  // 2. Base de asfalto urbana bajo la lotización
+  // 1.6 Capa Satelital Detallada de los Lotes (Zoom 17: 760m x 760m — Máxima resolución en las manzanas)
+  textureLoader.load('./assets/images/satelite-chavez-pata.png', (detTex) => {
+    detTex.colorSpace = THREE.SRGBColorSpace;
+    detTex.minFilter = THREE.LinearMipmapLinearFilter;
+
+    const detGeo = new THREE.PlaneGeometry(760.18, 760.18);
+    const detMat = new THREE.MeshBasicMaterial({
+      map: detTex,
+      transparent: true,
+      opacity: 0.98
+    });
+    _satDetailMesh = new THREE.Mesh(detGeo, detMat);
+    _satDetailMesh.rotation.x = -Math.PI / 2;
+    _satDetailMesh.position.set(10.76, 0.012, -6.37);
+    _satDetailMesh.receiveShadow = true;
+    _satDetailMesh.name = 'satelite_detalle_lotes';
+    scene.add(_satDetailMesh);
+  });
+
+  // 2. Base de asfalto urbana bajo la lotización (oculta por defecto mientras el satélite esté activo)
   const asphaltGeo = new THREE.PlaneGeometry(750, 1050);
-  _asphaltMat = new THREE.MeshLambertMaterial({ color: 0x525e70 }); // Asfalto gris urbano diurno
-  const asphalt = new THREE.Mesh(asphaltGeo, _asphaltMat);
-  asphalt.rotation.x = -Math.PI / 2;
-  asphalt.position.set(20, -0.02, 0);
-  asphalt.receiveShadow = true;
-  scene.add(asphalt);
+  _asphaltMat = new THREE.MeshLambertMaterial({ color: 0x525e70 });
+  _asphaltMesh = new THREE.Mesh(asphaltGeo, _asphaltMat);
+  _asphaltMesh.rotation.x = -Math.PI / 2;
+  _asphaltMesh.position.set(20, -0.02, 0);
+  _asphaltMesh.receiveShadow = true;
+  _asphaltMesh.visible = false; // Evita que asome el rectángulo gris debajo de la foto satelital
+  scene.add(_asphaltMesh);
 
   const infraGroup = new THREE.Group();
   infraGroup.name = 'infraestructura_vial';
