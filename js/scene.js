@@ -17,8 +17,8 @@ export function initScene(canvas) {
   // ── Escena ──────────────────────────────────
   _scene = new THREE.Scene();
   _scene.background = new THREE.Color(0x7ec8f8);
-  // Niebla lineal atmosférica de horizonte (cero niebla de 0 a 1600m para máxima nitidez de lotes)
-  _scene.fog = new THREE.Fog(0x7ec8f8, 1600, 3800);
+  // Niebla lineal atmosférica de horizonte (cero niebla de 0 a 1300m para máxima nitidez de lotes)
+  _scene.fog = new THREE.Fog(0x7ec8f8, 1300, 2900);
 
   // ── Cámara ──────────────────────────────────
   // near = 1.0 (evita pérdida de precisión Z) y far = 4500 (abarca todo el proyecto y zoom out)

@@ -65,8 +65,8 @@ export function toggleDayNight() {
     // Noche - Iluminación profesional de luna a gran escala (sin capas que corten la vista)
     scene.background.setHex(0x0f172a);
     scene.fog.color.setHex(0x0f172a);
-    scene.fog.near = 1600;
-    scene.fog.far = 3800;
+    scene.fog.near = 1300;
+    scene.fog.far = 2900;
     
     if (ambient) ambient.intensity = 0.45; // Luz de relleno general alta
     if (hemi) hemi.intensity = 0.55; // Resalta detalles desde arriba
@@ -79,8 +79,8 @@ export function toggleDayNight() {
     // Día — Máxima luminosidad, cielo azul radiante y nitidez
     scene.background.setHex(0x7ec8f8);
     scene.fog.color.setHex(0x7ec8f8);
-    scene.fog.near = 1600;
-    scene.fog.far = 3800;
+    scene.fog.near = 1300;
+    scene.fog.far = 2900;
 
     if (ambient) ambient.intensity = 0.85;
     if (hemi) hemi.intensity = 1.0;
