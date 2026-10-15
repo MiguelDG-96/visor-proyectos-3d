@@ -6,16 +6,28 @@ import { getScene } from './scene.js';
 
 let _groundMat  = null;
 let _asphaltMat = null;
+let _satMesh    = null;
+let _satVisible = true;
 
 export function updateTerrainDayNight(isNight) {
   if (!_groundMat || !_asphaltMat) return;
   if (isNight) {
     _groundMat.color.setHex(0x142216);  // Césped nocturno
     _asphaltMat.color.setHex(0x19202a); // Asfalto nocturno
+    if (_satMesh) _satMesh.material.opacity = 0.55; // Satélite tenue en noche
   } else {
     _groundMat.color.setHex(0x437a38);  // Césped verde tropical vivo y luminoso de día
     _asphaltMat.color.setHex(0x525e70); // Asfalto gris urbano diurno limpio
+    if (_satMesh) _satMesh.material.opacity = 0.98; // Satélite nítido en día
   }
+}
+
+export function toggleSatelliteLayer() {
+  if (_satMesh) {
+    _satVisible = !_satVisible;
+    _satMesh.visible = _satVisible;
+  }
+  return _satVisible;
 }
 
 export function createTerrain(bounds, infra = {}) {
@@ -29,6 +41,27 @@ export function createTerrain(bounds, infra = {}) {
   ground.position.y = -0.05;
   ground.receiveShadow = true;
   scene.add(ground);
+
+  // 1.5 Capa Satelital de Google Earth Georreferenciada (Chávez Pata en UTM 18S)
+  const textureLoader = new THREE.TextureLoader();
+  textureLoader.load('./assets/images/satelite-chavez-pata.png', (satTex) => {
+    satTex.colorSpace = THREE.SRGBColorSpace;
+    satTex.minFilter = THREE.LinearMipmapLinearFilter;
+
+    // Dimensiones georreferenciadas calibradas a resolución Web Mercator / UTM (760.18m x 760.18m)
+    const satGeo = new THREE.PlaneGeometry(760.18, 760.18);
+    const satMat = new THREE.MeshBasicMaterial({
+      map: satTex,
+      transparent: true,
+      opacity: 0.98
+    });
+    _satMesh = new THREE.Mesh(satGeo, satMat);
+    _satMesh.rotation.x = -Math.PI / 2;
+    _satMesh.position.set(10.76, 0.012, -6.37);
+    _satMesh.receiveShadow = true;
+    _satMesh.name = 'capa_satelital_google';
+    scene.add(_satMesh);
+  });
 
   // 2. Base de asfalto urbana bajo la lotización
   const asphaltGeo = new THREE.PlaneGeometry(750, 1050);

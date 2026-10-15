@@ -5,7 +5,7 @@
 import { initScene, getScene, getCamera, getRenderer } from './scene.js';
 import { setupCamera, getControls, resetCamera, toggleTourMode } from './camera.js';
 import { setupLighting, toggleDayNight }               from './lighting.js';
-import { createTerrain }                               from './terrain.js';
+import { createTerrain, toggleSatelliteLayer }         from './terrain.js';
 import { createAllManzanas, filterLots, animateLots, updateLabelLOD } from './lots.js';
 import { setupInteraction, updateInteraction }           from './interaction.js';
 import { initUI, updateStats }                         from './ui.js';
@@ -114,6 +114,16 @@ async function main() {
           btn.textContent = '🌙'; // Cambia ícono a luna
           document.body.classList.add('light-mode');
         }
+      }
+    });
+
+    // 8.8 Modo Satélite Google Earth
+    window.addEventListener('toggleSatellite', () => {
+      const isVisible = toggleSatelliteLayer();
+      const btn = $('btn-satellite');
+      if (btn) {
+        if (isVisible) btn.classList.add('active');
+        else btn.classList.remove('active');
       }
     });
 

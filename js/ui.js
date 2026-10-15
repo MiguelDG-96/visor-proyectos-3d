@@ -99,6 +99,14 @@ export function initUI(onFilter, onResetCamera) {
       window.dispatchEvent(new CustomEvent('toggleDayNight'));
     });
   }
+
+  // Capa Satélite Google Earth
+  const btnSat = $('btn-satellite');
+  if (btnSat) {
+    btnSat.addEventListener('click', () => {
+      window.dispatchEvent(new CustomEvent('toggleSatellite'));
+    });
+  }
 }
 
 // ══════════════════════════════════════════════
