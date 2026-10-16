@@ -219,6 +219,70 @@ export function showTooltip(lot, clientX, clientY) {
   EL.tooltip.classList.remove('hidden');
 }
 
+/**
+ * Muestra el tooltip informativo al pasar el cursor sobre el globo de una manzana
+ */
+export function showManzanaTooltip(mz, clientX, clientY) {
+  if (!EL.tooltip) return;
+
+  if (EL.ttCodigo)  EL.ttCodigo.textContent  = mz.id;
+  if (EL.ttArea)    EL.ttArea.textContent    = `${mz.totalLots} Lotes · ${mz.disp} Disponibles`;
+  if (EL.ttPrecio)  EL.ttPrecio.textContent  = '🔍 Clic para acercar y ampliar';
+
+  const ttw = 220;
+  const tth = 75;
+  let tx = clientX + 16;
+  let ty = clientY - 42;
+
+  if (tx + ttw > window.innerWidth)  tx = clientX - ttw - 12;
+  if (ty < 0)                        ty = clientY + 12;
+  if (ty + tth > window.innerHeight) ty = window.innerHeight - tth - 8;
+
+  EL.tooltip.style.left = `${tx}px`;
+  EL.tooltip.style.top  = `${ty}px`;
+  EL.tooltip.classList.remove('hidden');
+}
+
+/**
+ * Muestra un aviso flotante temporal elegante (toast)
+ */
+export function showToast(message, duration = 2800) {
+  let toast = $('app-toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'app-toast';
+    toast.style.cssText = `
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(8px);
+      background: rgba(15, 23, 42, 0.92);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      color: #ffffff;
+      padding: 10px 22px;
+      border-radius: 9999px;
+      border: 1px solid rgba(56, 189, 248, 0.45);
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+      z-index: 9999;
+      pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      opacity: 0;
+    `;
+    document.body.appendChild(toast);
+  }
+  toast.textContent = message;
+  toast.style.opacity = '1';
+  toast.style.transform = 'translateX(-50%) translateY(0)';
+  clearTimeout(toast._timeout);
+  toast._timeout = setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateX(-50%) translateY(8px)';
+  }, duration);
+}
+
 /** Oculta el tooltip. */
 export function hideTooltip() {
   EL.tooltip?.classList.add('hidden');

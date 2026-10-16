@@ -30,17 +30,24 @@ export function setupCamera(center) {
   _controls.update();
 }
 
-/** Regresa la cámara a la vista aérea inicial con animación suave */
-export function resetCamera() {
-  const camera = getCamera();
-  const cx = _projectCenter.x;
-  const cz = _projectCenter.z;
+let _currentAnimId = null;
 
-  const targetPos = { x: cx, y: 380, z: cz + 360 };
-  const targetLookAt = { x: cx, y: 0, z: cz };
+export const isCameraAnimating = () => _currentAnimId !== null;
+
+/**
+ * Anima suavemente la cámara y el target de OrbitControls a una nueva posición
+ */
+export function animateCameraTo(targetPos, targetLookAt, onComplete) {
+  if (_currentAnimId) {
+    cancelAnimationFrame(_currentAnimId);
+    _currentAnimId = null;
+  }
+
+  const camera = getCamera();
+  if (!_controls) return;
 
   let frame = 0;
-  const totalFrames = 45;
+  const totalFrames = 50;
 
   const startPos = {
     x: camera.position.x,
@@ -69,9 +76,51 @@ export function resetCamera() {
     );
     _controls.update();
 
-    if (frame < totalFrames) requestAnimationFrame(animStep);
+    if (frame < totalFrames) {
+      _currentAnimId = requestAnimationFrame(animStep);
+    } else {
+      _currentAnimId = null;
+      if (onComplete) onComplete();
+    }
   }
-  requestAnimationFrame(animStep);
+  _currentAnimId = requestAnimationFrame(animStep);
+}
+
+/** Regresa la cámara a la vista aérea inicial con animación suave */
+export function resetCamera() {
+  const cx = _projectCenter.x;
+  const cz = _projectCenter.z;
+  animateCameraTo(
+    { x: cx, y: 380, z: cz + 360 },
+    { x: cx, y: 0, z: cz }
+  );
+}
+
+/**
+ * Realiza un zoom cinemático enfocado en una manzana específica para ampliar la vista
+ * @param {object} mz Objeto de datos de la manzana { cx, cz, radius, id }
+ */
+export function focusOnManzana(mz) {
+  const cx = mz.cx;
+  const cz = mz.cz;
+  const r  = mz.radius || 40;
+
+  // Altura y encuadre óptimo según las dimensiones de la manzana
+  const altitude = Math.max(r * 1.50, 65);
+  const offsetZ  = Math.max(r * 1.40, 60);
+
+  const targetPos = {
+    x: cx,
+    y: altitude,
+    z: cz + offsetZ
+  };
+  const targetLookAt = {
+    x: cx,
+    y: 0,
+    z: cz
+  };
+
+  animateCameraTo(targetPos, targetLookAt);
 }
 
 export const getControls = () => _controls;

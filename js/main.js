@@ -3,10 +3,11 @@
  * Punto de entrada — orquesta la inicialización y el render loop.
  */
 import { initScene, getScene, getCamera, getRenderer } from './scene.js';
-import { setupCamera, getControls, resetCamera, toggleTourMode } from './camera.js';
+import { setupCamera, getControls, resetCamera, toggleTourMode, isCameraAnimating } from './camera.js';
 import { setupLighting, toggleDayNight }               from './lighting.js';
 import { createTerrain, toggleSatelliteLayer }         from './terrain.js';
 import { createAllManzanas, filterLots, animateLots, updateLabelLOD } from './lots.js';
+import { initManzanas, animateManzanaPins, updateManzanaPinsLOD } from './manzanas.js';
 import { setupInteraction, updateInteraction }           from './interaction.js';
 import { initUI, updateStats }                         from './ui.js';
 import { initPerformance, tickPerformance }            from './performance.js';
@@ -46,20 +47,24 @@ async function main() {
     setProgress(38, 'Configurando iluminación...');
     setupLighting();
 
-    // 4. Todos los lotes del plano completo (4 manzanas con coords reales del PDF)
+    // 4. Todos los lotes del plano completo (30 manzanas con coords reales CAD)
     setProgress(52, 'Generando plano completo...');
     const { center, bounds } = createAllManzanas(data);
 
+    // 4.5 Globos 3D interactivos sobre cada Manzana con animación y zoom
+    setProgress(60, 'Creando globos interactivos de manzanas...');
+    initManzanas(data);
+
     // 5. Terreno y calles
-    setProgress(65, 'Creando terreno, calles y perímetro...');
+    setProgress(68, 'Creando terreno, calles y perímetro...');
     createTerrain(bounds, data.infraestructura);
 
     // 6. Cámara
-    setProgress(75, 'Configurando cámara...');
+    setProgress(78, 'Configurando cámara...');
     setupCamera(center);
 
     // 7. Interacción
-    setProgress(85, 'Configurando interacción...');
+    setProgress(86, 'Configurando interacción...');
     setupInteraction();
 
     // 8. UI — pasar todos los lotes de todas las manzanas
@@ -151,35 +156,34 @@ function _startRenderLoop() {
   const renderer = getRenderer();
 
   let framesSinceLOD = 0;
-  let lastCamX = 0, lastCamY = 0, lastCamZ = 0;
-  let lastRotX = 0, lastRotY = 0, lastRotZ = 0;
-  let idleCounter = 0;
 
   function animate() {
     requestAnimationFrame(animate);
 
-    // 1. LOD de etiquetas de lotes cada 10 frames (a >220m de altura oculta 717 sprites ahorrando draw calls)
+    // 1. LOD de etiquetas de lotes y globos cada 10 frames (a >220m de altura oculta 717 sprites ahorrando draw calls)
     framesSinceLOD++;
     if (framesSinceLOD > 10) {
       framesSinceLOD = 0;
       updateLabelLOD(camera.position.y);
+      updateManzanaPinsLOD(camera.position.y);
     }
 
+    // 1.5 Animación armónica flotante de los globos de manzana (arriba y abajo en onda continua)
+    const nowSec = performance.now() * 0.001;
+    animateManzanaPins(nowSec);
+
     // 2. Actualizar controles dependiendo del modo
-    let controlsActive = false;
     if (isWalkModeActive()) {
       updateWalkMode();
-      controlsActive = true;
     } else {
       const controls = getControls();
       if (controls) {
         controls.update();
-        if (controls.autoRotate) controlsActive = true;
       }
     }
 
-    // 3. Animación de lotes (devuelve true solo si hay algún lote activo en transición)
-    const lotsAnimating = animateLots();
+    // 3. Animación de lotes seleccionados o en hover
+    animateLots();
 
     // 4. Actualizar interacción si estamos caminando
     updateInteraction();
@@ -187,41 +191,9 @@ function _startRenderLoop() {
     // 5. Monitor de rendimiento (FPS)
     tickPerformance();
 
-    // 6. Detección de movimiento de cámara para reposo inteligente
-    const camMoved = Math.abs(camera.position.x - lastCamX) > 0.001 ||
-                     Math.abs(camera.position.y - lastCamY) > 0.001 ||
-                     Math.abs(camera.position.z - lastCamZ) > 0.001 ||
-                     Math.abs(camera.rotation.x - lastRotX) > 0.0001 ||
-                     Math.abs(camera.rotation.y - lastRotY) > 0.0001 ||
-                     Math.abs(camera.rotation.z - lastRotZ) > 0.0001;
-
-    lastCamX = camera.position.x;
-    lastCamY = camera.position.y;
-    lastCamZ = camera.position.z;
-    lastRotX = camera.rotation.x;
-    lastRotY = camera.rotation.y;
-    lastRotZ = camera.rotation.z;
-
-    const isBusy = controlsActive || lotsAnimating || camMoved;
-
-    if (isBusy) {
-      idleCounter = 0;
-      renderer.render(scene, camera);
-    } else {
-      idleCounter++;
-      // Renderiza hasta 5 frames posteriores al cese de movimiento para estabilización perfecta
-      if (idleCounter <= 5) {
-        renderer.render(scene, camera);
-      }
-      // En reposo absoluto (idleCounter > 5), NO satura la GPU ni calienta la laptop/móvil
-    }
+    // 6. Renderizado continuo fluido a 60 FPS (cuando el tab está oculto o minimizado rAF se pausa a 0% CPU automáticamente)
+    renderer.render(scene, camera);
   }
-
-  // Reactivar renderizado al primer toque, clic, tecla o rueda del usuario
-  window.addEventListener('pointerdown', () => { idleCounter = 0; }, { passive: true });
-  window.addEventListener('wheel',       () => { idleCounter = 0; }, { passive: true });
-  window.addEventListener('touchstart',  () => { idleCounter = 0; }, { passive: true });
-  window.addEventListener('keydown',     () => { idleCounter = 0; }, { passive: true });
 
   animate();
 }
