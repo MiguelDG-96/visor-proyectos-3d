@@ -279,3 +279,4 @@ export function setPinHovered(pin, hovered) {
 
 export const getManzanaPins = () => _manzanaPins;
 export const getManzanasList = () => _manzanasList;
+
