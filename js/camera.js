@@ -24,8 +24,8 @@ export function setupCamera(center) {
   _controls.enableDamping = true;
   _controls.dampingFactor = 0.08;
   _controls.minDistance = 5;
-  _controls.maxDistance = 1250; // Calibrado para que la capa satelital cubra todo el encuadre sin que asomen los bordes
-  _controls.maxPolarAngle = Math.PI / 2.15; // Evita ángulo rasante que exponga el horizonte fuera del plano
+  _controls.maxDistance = 850; // Límite de alejamiento calibrado para que el satélite siempre llene la pantalla sin mostrar bordes
+  _controls.maxPolarAngle = Math.PI / 2.25; // Evita ángulo rasante excesivo que exponga el fondo fuera del satélite
   _controls.screenSpacePanning = false;
   _controls.update();
 }

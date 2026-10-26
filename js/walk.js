@@ -21,7 +21,7 @@ export function initWalkMode(renderer, scene) {
   const camera = getCamera();
   controls = new PointerLockControls(camera, renderer.domElement);
 
-  scene.add(controls.getObject());
+  scene.add(controls.object);
 
   // Interfaz de instrucciones
   overlayInstructions = document.createElement('div');
