@@ -28,6 +28,7 @@ export function initManzanas(jsonData) {
 
   _pinsGroup = new THREE.Group();
   _pinsGroup.name = 'globos_manzanas';
+  _pinsGroup.renderOrder = 999;
   _manzanaPins = [];
   _manzanaData.clear();
   _manzanasList = [];
@@ -77,7 +78,8 @@ export function initManzanas(jsonData) {
     const spriteMat = new THREE.SpriteMaterial({
       map: texture,
       transparent: true,
-      depthTest: false, // Permite que el globo se aprecie siempre sin clipear con tejados
+      depthTest: false,
+      depthWrite: false,
       opacity: 0.98
     });
 
@@ -85,6 +87,7 @@ export function initManzanas(jsonData) {
     const scaleX = 24.0;
     const scaleY = 15.0;
     sprite.scale.set(scaleX, scaleY, 1);
+    sprite.renderOrder = 999;
 
     // Altura base proporcional al radio para mejor visibilidad aérea
     const baseY = Math.max(radius * 0.35 + 18, 22);
@@ -101,6 +104,7 @@ export function initManzanas(jsonData) {
     const disc = new THREE.Mesh(discGeo, discMat);
     disc.rotation.x = -Math.PI / 2;
     disc.position.set(cx, 0.12, cz);
+    disc.renderOrder = 2;
     _pinsGroup.add(disc);
 
     // Guardar metadata en userData para raycasting y animación
@@ -279,4 +283,5 @@ export function setPinHovered(pin, hovered) {
 
 export const getManzanaPins = () => _manzanaPins;
 export const getManzanasList = () => _manzanasList;
+export const getManzanaById = (id) => _manzanaData.get(id);
 

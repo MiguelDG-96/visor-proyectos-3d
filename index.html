@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Visor 3D interactivo de lotes — Lotización Chávez Pata (Moyobamba). Recorre y explora 717 lotes residenciales en 3D con georreferenciación oficial." />
-  <title>Lotización Chávez Pata (Moyobamba) — Visor 3D Oficial</title>
+  <meta name="description" content="Visor 3D interactivo de lotes — Residencial Santa Anita (Moyobamba). Recorre y explora 717 lotes residenciales en 3D con georreferenciación oficial." />
+  <title>Residencial Santa Anita (Moyobamba) — Visor 3D Oficial</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Monda:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/responsive.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/nipplejs/0.10.1/nipplejs.min.js"></script>
@@ -19,7 +19,7 @@
   <div id="loading-screen">
     <div class="loader-content">
       <div class="loader-icon">🏡</div>
-      <h2 class="loader-title">Lotización: <span>Proy. Santa Anita</span></h2>
+      <h2 class="loader-title">Residencial <span>Santa Anita</span></h2>
       <p style="font-size: 12px; color: #94a3b8; margin-top: 2px;">Moyobamba, San Martín &middot; WGS-84 / UTM 18S</p>
       <div class="loader-bar-wrap" style="margin-top: 14px;">
         <div class="loader-bar-fill" id="loader-progress"></div>
@@ -34,127 +34,310 @@
   <canvas id="three-canvas"></canvas>
 
   <!-- ═══════════════════════════════════════════
-       INTERFAZ DE USUARIO (OVERLAY)
+       INTERFAZ DE USUARIO (OVERLAY GLASSMORFISMO)
   ════════════════════════════════════════════ -->
   <div id="ui-overlay">
 
-    <!-- HEADER -->
-    <header id="header">
-      <div class="header-left">
-        <h1 class="project-name">Proyecto <span>Santa Anita</span></h1>
-        <span class="project-badge" id="manzana-badge">Moyobamba &middot; 30 Manzanas &middot; 717 Lotes CAD</span>
-      </div>
-      <div class="header-stats">
-        <div class="stat-chip disponible">
-          <span class="chip-dot"></span>
-          <strong id="count-disponible">0</strong>
-          <span>Disponibles</span>
-        </div>
-        <div class="stat-chip reservado">
-          <span class="chip-dot"></span>
-          <strong id="count-reservado">0</strong>
-          <span>Reservados</span>
-        </div>
-        <div class="stat-chip vendido">
-          <span class="chip-dot"></span>
-          <strong id="count-vendido">0</strong>
-          <span>Vendidos</span>
-        </div>
-      </div>
-    </header>
+    <!-- ── BARRA LATERAL IZQUIERDA (TARJETAS CON SEPARACIÓN FLOTANTE) ── -->
+    <div id="left-sidebar" class="left-sidebar-group">
 
-    <!-- BARRA DE FILTROS / CONTROLES -->
-    <nav id="controls-bar" aria-label="Filtros de lotes">
-      <button class="ctrl-btn active" id="btn-todos"        data-filter="all">Todos</button>
-      <button class="ctrl-btn"        id="btn-disponibles"  data-filter="disponible">Disponibles</button>
-      <button class="ctrl-btn"        id="btn-reservados"   data-filter="reservado">Reservados</button>
-      <div class="ctrl-divider"></div>
-      <button class="ctrl-btn icon active" id="btn-satellite"    title="Fondo Satelital Google Earth" aria-label="Satélite">🛰️</button>
-      <button class="ctrl-btn icon"        id="btn-day-night"    title="Día / Noche" aria-label="Día / Noche">🌙</button>
-      <button class="ctrl-btn icon"        id="btn-tour-mode"    title="Tour Guiado" aria-label="Tour Guiado">🎥</button>
-      <button class="ctrl-btn icon"        id="btn-walk-mode"    title="Modo Caminata (WASD)" aria-label="Modo Caminata">🚶</button>
-      <button class="ctrl-btn icon"        id="btn-reset-camera" title="Restablecer cámara" aria-label="Restablecer cámara">↺</button>
-    </nav>
+      <!-- ── 1. TARJETA SUPERIOR IZQUIERDA: RESIDENCIAL SANTA ANITA ── -->
+      <div id="project-card" class="glass-card-dark">
+        <div class="project-card-header">
+          <span class="project-card-subtitle">Residencial</span>
+          <h1 class="project-card-title">Santa Anita</h1>
+        </div>
+        <div class="project-card-location">
+          <svg class="location-pin-svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+          <div class="location-text">
+            <span class="location-city">Moyobamba</span>
+            <span class="location-details">30 Manzanas - 717 Lotes</span>
+          </div>
+        </div>
+      </div>
 
-    <!-- LEYENDA -->
-    <div id="legend" aria-label="Leyenda de estados">
-      <div class="legend-item">
-        <span class="legend-dot" style="--c:#22c55e"></span>Disponible
+      <!-- ── 2. TARJETA LATERAL IZQUIERDA: ESTADÍSTICAS Y FILTROS ── -->
+      <div id="stats-card" class="glass-card-dark" aria-label="Estadísticas de lotes">
+        
+        <div class="stat-item active" id="stat-total" data-filter="all" role="button" tabindex="0" title="Ver todos los lotes">
+          <div class="stat-icon-wrap stat-grid-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+              <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+              <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+              <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+            </svg>
+          </div>
+          <div class="stat-info">
+            <strong class="stat-value" id="count-total">717</strong>
+            <span class="stat-text">Lotes totales</span>
+          </div>
+        </div>
+
+        <div class="stat-item" id="stat-disponibles" data-filter="disponible" role="button" tabindex="0" title="Filtrar disponibles">
+          <div class="stat-glow-orb orb-green"></div>
+          <div class="stat-info">
+            <strong class="stat-value" id="count-disponible">488</strong>
+            <span class="stat-text">Disponibles</span>
+          </div>
+        </div>
+
+        <div class="stat-item" id="stat-reservados" data-filter="reservado" role="button" tabindex="0" title="Filtrar reservados">
+          <div class="stat-glow-orb orb-yellow"></div>
+          <div class="stat-info">
+            <strong class="stat-value" id="count-reservado">143</strong>
+            <span class="stat-text">Reservados</span>
+          </div>
+        </div>
+
+        <div class="stat-item" id="stat-vendidos" data-filter="vendido" role="button" tabindex="0" title="Filtrar vendidos">
+          <div class="stat-glow-orb orb-red"></div>
+          <div class="stat-info">
+            <strong class="stat-value" id="count-vendido">86</strong>
+            <span class="stat-text">Vendidos</span>
+          </div>
+        </div>
+
       </div>
-      <div class="legend-item">
-        <span class="legend-dot" style="--c:#f59e0b"></span>Reservado
-      </div>
-      <div class="legend-item">
-        <span class="legend-dot" style="--c:#ef4444"></span>Vendido (Con Casa)
+
+    </div>
+
+    <!-- ── 3. BRÚJULA Y CONTROLES DE ZOOM (INFERIOR IZQUIERDA) ── -->
+    <div id="nav-controls" class="nav-controls-group">
+      <!-- Brújula interactiva con rotación en tiempo real -->
+      <button id="btn-compass" class="compass-btn" title="Alinear al Norte" aria-label="Brújula">
+        <div class="compass-dial" id="compass-dial">
+          <svg viewBox="0 0 52 52" width="46" height="46" fill="none">
+            <circle cx="26" cy="26" r="24" fill="rgba(22, 26, 34, 0.80)" stroke="rgba(255, 255, 255, 0.30)" stroke-width="1.5"/>
+            <!-- Ticks cardinales -->
+            <line x1="26" y1="4" x2="26" y2="7" stroke="#ffffff" stroke-width="2"/>
+            <line x1="26" y1="45" x2="26" y2="48" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+            <line x1="4" y1="26" x2="7" y2="26" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+            <line x1="45" y1="26" x2="48" y2="26" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+            <!-- Letra N -->
+            <text x="26" y="14" font-family="'Monda', sans-serif" font-weight="700" font-size="9" fill="#ffffff" text-anchor="middle">N</text>
+            <!-- Aguja imantada Norte / Sur -->
+            <polygon points="26,16 29,26 26,24 23,26" fill="#ef4444"/>
+            <polygon points="26,36 29,26 26,24 23,26" fill="rgba(255, 255, 255, 0.9)"/>
+            <circle cx="26" cy="26" r="2.5" fill="#ffffff"/>
+          </svg>
+        </div>
+      </button>
+
+      <!-- Píldora de Zoom (+ / -) -->
+      <div class="zoom-pill-controls">
+        <button id="btn-zoom-in" class="zoom-pill-btn" title="Acercar (+)" aria-label="Acercar">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        </button>
+        <div class="zoom-pill-divider"></div>
+        <button id="btn-zoom-out" class="zoom-pill-btn" title="Alejar (-)" aria-label="Alejar">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        </button>
       </div>
     </div>
 
-    <!-- MONITOR FPS -->
+    <!-- ── 4. DROPDOWN DE MANZANAS (SUPERIOR CENTRO) ── -->
+    <div id="manzana-dropdown-wrap" class="manzana-dropdown-container">
+      <button id="btn-manzana-dropdown" class="manzana-trigger-btn" aria-haspopup="true" aria-expanded="false">
+        <span id="selected-manzana-label">Manzana: Todas</span>
+        <svg class="dropdown-chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </button>
+
+      <div id="manzana-menu" class="manzana-menu-dropdown hidden" role="menu">
+        <div class="manzana-list" id="manzana-list-items">
+          <!-- Generado dinámicamente: Todas + Mz-A ... Mz-Z -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 5. BARRA DOCK INFERIOR (HERRAMIENTAS CENTRADAS) ── -->
+    <nav id="bottom-dock-nav" class="bottom-dock-wrapper" aria-label="Herramientas del visor 3D">
+      <div class="bottom-dock-bar">
+        
+        <!-- Vista satelital -->
+        <button class="dock-action-btn active" id="btn-satellite" title="Vista satelital">
+          <div class="dock-icon-circle">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M13 7l2 2m-4 4l2 2m-7 1l6-6a3 3 0 0 1 4.24 0l1.76 1.76a3 3 0 0 1 0 4.24l-6 6a3 3 0 0 1-4.24 0L4 18.24a3 3 0 0 1 0-4.24z"></path>
+              <path d="M14 4l6 6"></path>
+              <path d="M5 20l4-4"></path>
+              <path d="M2 17l5 5"></path>
+            </svg>
+          </div>
+          <span class="dock-chip-label">Vista satelital</span>
+        </button>
+
+        <!-- Día / Noche -->
+        <button class="dock-action-btn" id="btn-day-night" title="Modo Día / Noche">
+          <div class="dock-icon-circle">
+            <span class="dock-emoji-icon" id="day-night-icon">🌙</span>
+          </div>
+          <span class="dock-chip-label">Día / Noche</span>
+        </button>
+
+        <!-- Tour guiado -->
+        <button class="dock-action-btn" id="btn-tour-mode" title="Tour guiado">
+          <div class="dock-icon-circle">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="23 7 16 12 23 17 23 7"></polygon>
+              <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+            </svg>
+          </div>
+          <span class="dock-chip-label">Tour guiado</span>
+        </button>
+
+        <!-- Modo caminata -->
+        <button class="dock-action-btn" id="btn-walk-mode" title="Modo caminata (WASD)">
+          <div class="dock-icon-circle">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="5" r="2"></circle>
+              <path d="M10 22l2-7 2-3 2 4 3-1"></path>
+              <path d="M7 13l3-2 3 2"></path>
+            </svg>
+          </div>
+          <span class="dock-chip-label">Modo caminata</span>
+        </button>
+
+        <!-- Restablecer cámara -->
+        <button class="dock-action-btn" id="btn-reset-camera" title="Restablecer cámara">
+          <div class="dock-icon-circle">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="1 4 1 10 7 10"></polyline>
+              <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+            </svg>
+          </div>
+          <span class="dock-chip-label">Restablecer cámara</span>
+        </button>
+
+      </div>
+    </nav>
+
+    <!-- ── 6. PANEL LATERAL DERECHO: DETALLES DEL LOTE SELECCIONADO ── -->
+    <aside id="lot-panel" class="lot-card-light hidden" aria-label="Detalles del lote">
+      
+      <!-- Carrusel fotográfico con flechas y botón cerrar -->
+      <div class="lot-gallery-container">
+        <img id="lot-gallery-img" src="assets/images/house-1.png" alt="Render de vivienda en el lote" class="gallery-image" />
+        <button class="gallery-nav-btn prev" id="btn-gallery-prev" aria-label="Imagen anterior">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <button class="gallery-nav-btn next" id="btn-gallery-next" aria-label="Imagen siguiente">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+        <button class="gallery-close-btn" id="btn-close-panel" aria-label="Cerrar panel">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <!-- Cuerpo del panel -->
+      <div class="lot-card-body">
+        
+        <!-- Título del Lote -->
+        <h2 class="lot-card-heading" id="panel-codigo">Lote 12 - Mz. F</h2>
+
+        <!-- Estado Badge con brillo -->
+        <div class="lot-status-pill disponible" id="panel-estado">
+          <span class="status-dot"></span>
+          <span class="status-name" id="panel-estado-text">Disponible</span>
+        </div>
+
+        <!-- Lista de Especificaciones Técnicas -->
+        <div class="lot-specs-list">
+          
+          <div class="lot-spec-item">
+            <div class="spec-left">
+              <svg class="spec-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+              </svg>
+              <span>Área</span>
+            </div>
+            <strong class="spec-value" id="panel-area">120 m²</strong>
+          </div>
+
+          <div class="lot-spec-item">
+            <div class="spec-left">
+              <svg class="spec-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="9"></circle>
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+              </svg>
+              <span>Frente</span>
+            </div>
+            <strong class="spec-value" id="panel-frente">8.00 m</strong>
+          </div>
+
+          <div class="lot-spec-item">
+            <div class="spec-left">
+              <svg class="spec-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="12" y1="8" x2="12" y2="16"></line>
+                <line x1="8" y1="12" x2="16" y2="12"></line>
+              </svg>
+              <span>Fondo</span>
+            </div>
+            <strong class="spec-value" id="panel-fondo">15.00 m</strong>
+          </div>
+
+          <div class="lot-spec-item price-row">
+            <div class="spec-left">
+              <svg class="spec-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+              </svg>
+              <span>Precio</span>
+            </div>
+            <strong class="spec-value price-text" id="panel-precio">S/ 25,000</strong>
+          </div>
+
+        </div>
+
+        <!-- Botones de Acción -->
+        <div class="lot-card-actions">
+          
+          <!-- Botón Principal: Separar lote (WhatsApp) -->
+          <button class="btn-separar-lote" id="btn-contactar">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+            </svg>
+            <span>Separar lote</span>
+          </button>
+
+          <!-- Botón Secundario: Ver manzana -->
+          <button class="btn-ver-manzana" id="btn-ver-manzana">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+              <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+            <span>Ver manzana</span>
+          </button>
+
+        </div>
+
+        <!-- Georreferenciación oficial plegable -->
+        <details class="lot-tech-details">
+          <summary>Ver georreferenciación oficial</summary>
+          <div id="panel-coords" class="tech-coords-info"></div>
+          <div id="panel-vias" class="tech-vias-tags"></div>
+        </details>
+
+      </div>
+    </aside>
+
+    <!-- ── 7. MONITOR FPS ── -->
     <div id="perf-monitor">
       <span id="fps-label">FPS: --</span>
       <span id="lots-label">717 lotes</span>
     </div>
 
-    <!-- TOOLTIP (hover rápido) -->
+    <!-- ── 8. TOOLTIP (hover sobre lote o manzana) ── -->
     <div id="tooltip" class="hidden" role="tooltip" aria-live="polite">
       <span id="tt-codigo" class="tt-title"></span>
       <span id="tt-area" class="tt-sub"></span>
       <span id="tt-precio" class="tt-price"></span>
     </div>
-
-    <!-- PANEL DE LOTE (click) -->
-    <aside id="lot-panel" class="hidden" aria-label="Información del lote">
-      <div class="panel-header">
-        <div class="panel-header-info">
-          <span class="panel-estado-badge" id="panel-estado">Disponible</span>
-          <h2 class="panel-codigo" id="panel-codigo">MZ-Z-L-01</h2>
-        </div>
-        <button class="panel-close-btn" id="btn-close-panel" aria-label="Cerrar panel">✕</button>
-      </div>
-
-      <div class="panel-body">
-        <div class="panel-grid">
-          <div class="panel-field">
-            <span class="field-label">Área</span>
-            <span class="field-val" id="panel-area">— m²</span>
-          </div>
-          <div class="panel-field">
-            <span class="field-label">Perímetro</span>
-            <span class="field-val" id="panel-frente">— m</span>
-          </div>
-          <div class="panel-field">
-            <span class="field-label">Frente Aprox</span>
-            <span class="field-val" id="panel-fondo">— m</span>
-          </div>
-          <div class="panel-field">
-            <span class="field-label">Manzana</span>
-            <span class="field-val" id="panel-manzana">—</span>
-          </div>
-        </div>
-
-        <div class="panel-price-box">
-          <span class="price-tag">Precio Estimado</span>
-          <strong class="price-amount" id="panel-precio">S/ —</strong>
-          <span class="price-m2" id="panel-precio-m2">S/ — / m²</span>
-        </div>
-
-        <div class="panel-vias-section" style="margin-top: 10px; padding: 8px; background: rgba(15, 23, 42, 0.6); border-radius: 6px; border: 1px solid rgba(255,255,255,0.08);">
-          <span class="field-label" style="font-weight: 600; color: #38bdf8;">Georreferenciación Oficial</span>
-          <div id="panel-coords" style="font-size: 10.5px; color: #cbd5e1; font-family: monospace; line-height: 1.4; margin-top: 4px;">
-            UTM: — | GPS: —
-          </div>
-        </div>
-
-        <div class="panel-vias-section" style="margin-top: 8px;">
-          <span class="field-label">Infraestructura</span>
-          <div class="panel-vias-tags" id="panel-vias"></div>
-        </div>
-
-        <button class="btn-contactar" id="btn-contactar">
-          Consultar disponibilidad →
-        </button>
-      </div>
-    </aside>
 
     <!-- CROSSHAIR para modo caminata -->
     <div id="crosshair" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -100%); pointer-events: none; z-index: 1000; filter: drop-shadow(0px 3px 3px rgba(0,0,0,0.4));">

@@ -1,64 +1,105 @@
-/* ═══════════════════════════════════════════
-   VISOR 3D INMOBILIARIO — ESTILOS PRINCIPALES
-   ══════════════════════════════════════════ */
+/* ═════════════════════════════════════════════════════════════════
+   RESIDENCIAL SANTA ANITA — ESTILO GLASSMORFISMO APPLE STYLE
+   Inspirado en el diseño hero-cta-btn (Apple Frosted Glass)
+   ═════════════════════════════════════════════════════════════════ */
 
-/* ── Variables globales ─────────────────────── */
+/* ── Variables globales del Sistema de Diseño ─────────────────── */
 :root {
-  --bg:            #0a0f1e;
-  --bg-panel:      rgba(10, 15, 35, 0.88);
-  --glass-border:  rgba(255, 255, 255, 0.08);
-  --blur:          blur(20px);
-  --accent:        #3b82f6;
-  --accent-light:  #60a5fa;
-  --green:         #22c55e;
-  --amber:         #f59e0b;
-  --red:           #ef4444;
-  --text:          #f1f5f9;
-  --text-2:        #94a3b8;
-  --text-3:        #475569;
-  --r:             12px;
-  --r-sm:          8px;
-  --r-pill:        100px;
-  --font:          'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --shadow:        0 8px 32px rgba(0, 0, 0, 0.4);
-  --shadow-sm:     0 4px 16px rgba(0, 0, 0, 0.3);
+  --bg-dark:                #0b0e14;
+
+  /* Frosted White / Grey Glass (Apple Style) */
+  --apple-glass-bg:         rgba(255, 255, 255, 0.15);
+  --apple-glass-hover:      rgba(255, 255, 255, 0.22);
+  --apple-glass-active:     rgba(255, 255, 255, 0.30);
+  --apple-glass-border:     rgba(255, 255, 255, 0.30);
+  --apple-glass-border-hov: rgba(255, 255, 255, 0.50);
+  --apple-glass-blur:       blur(24px) saturate(180%);
+  --apple-glass-shadow:     0 8px 32px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.20);
+  --apple-glass-shadow-hov: 0 12px 36px rgba(0, 0, 0, 0.20), inset 0 1px 0 rgba(255, 255, 255, 0.30);
+
+  /* Secciones con Vidrio Gris Neutro Ahumado (Sin tonalidad azul) */
+  --grey-glass-card:        rgba(22, 26, 34, 0.65);
+  --grey-glass-card-hover:  rgba(28, 33, 44, 0.75);
+  --grey-glass-solid:       rgba(20, 24, 32, 0.92);
+  --grey-glass-border:      rgba(255, 255, 255, 0.24);
+  --grey-glass-shadow:      0 8px 32px rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.20);
+
+  /* Tarjeta Lateral de Lote (Blanco translúcido elegante) */
+  --light-glass-card:       rgba(255, 255, 255, 0.88);
+  --light-glass-border:     rgba(255, 255, 255, 0.85);
+  --light-glass-shadow:     0 20px 50px rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+
+  --color-disponible:       #22c55e;
+  --color-reservado:        #f59e0b;
+  --color-vendido:          #ef4444;
+
+  --text-dark:              #0f172a;
+  --text-dark-muted:        #475569;
+  --text-white:             #ffffff;
+  --text-white-muted:       rgba(255, 255, 255, 0.72);
+
+  --font-family:            -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", "Monda", Helvetica, Arial, sans-serif;
 }
 
-/* ── Reset ──────────────────────────────────── */
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+/* ── Reset General ────────────────────────────────────────────── */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
 html, body {
-  width: 100%; height: 100vh;
+  width: 100%;
+  height: 100vh;
   overflow: hidden;
-  font-family: var(--font);
-  background: var(--bg);
-  color: var(--text);
+  font-family: var(--font-family);
+  background: var(--bg-dark);
+  color: var(--text-white);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  user-select: none;
 }
 
-/* ── Canvas ─────────────────────────────────── */
+/* ── Scrollbars Transparentes ─────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.24);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.40);
+}
+
+/* ── Canvas 3D de Fondo ───────────────────────────────────────── */
 #three-canvas {
   position: fixed;
   inset: 0;
-  display: block;
   width: 100% !important;
   height: 100% !important;
   z-index: 0;
+  display: block;
 }
 
-/* ══════════════════════════════════════════════
-   LOADING SCREEN
-══════════════════════════════════════════════ */
+/* ═════════════════════════════════════════════════════════════════
+   PANTALLA DE CARGA
+   ═════════════════════════════════════════════════════════════════ */
 #loading-screen {
   position: fixed;
   inset: 0;
-  z-index: 200;
-  background: var(--bg);
+  z-index: 9999;
+  background: radial-gradient(circle at center, #1b202a 0%, #0c0f16 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   transition: opacity 0.8s ease, visibility 0.8s ease;
 }
+
 #loading-screen.fade-out {
   opacity: 0;
   visibility: hidden;
@@ -69,539 +110,955 @@ html, body {
   text-align: center;
   width: 320px;
 }
+
 .loader-icon {
   font-size: 3.5rem;
-  animation: float 3s ease-in-out infinite;
+  animation: loaderFloat 2.8s ease-in-out infinite;
   display: block;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
-@keyframes float {
+
+@keyframes loaderFloat {
   0%, 100% { transform: translateY(0); }
-  50%       { transform: translateY(-12px); }
+  50%       { transform: translateY(-10px); }
 }
+
 .loader-title {
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   font-weight: 700;
-  letter-spacing: -0.02em;
-  margin-bottom: 28px;
-  color: var(--text);
+  color: #ffffff;
+  letter-spacing: -0.01em;
 }
-.loader-title span { color: var(--accent-light); }
+
+.loader-title span {
+  color: #cbd5e1;
+}
 
 .loader-bar-wrap {
-  height: 3px;
-  background: rgba(255,255,255,0.07);
-  border-radius: var(--r-pill);
+  height: 4px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 50px;
   overflow: hidden;
-  margin-bottom: 14px;
 }
+
 .loader-bar-fill {
   height: 100%;
   width: 0%;
-  border-radius: var(--r-pill);
-  background: linear-gradient(90deg, var(--accent), #8b5cf6);
-  transition: width 0.4s ease;
-}
-.loader-text {
-  font-size: 0.78rem;
-  color: var(--text-3);
-  font-weight: 500;
+  border-radius: 50px;
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
+  transition: width 0.35s ease;
 }
 
-/* ══════════════════════════════════════════════
-   OVERLAY CONTAINER
-══════════════════════════════════════════════ */
+.loader-text {
+  font-size: 0.8rem;
+  color: #94a3b8;
+  font-weight: 500;
+  margin-top: 10px;
+}
+
+/* ═════════════════════════════════════════════════════════════════
+   CAPA DE INTERFAZ DE USUARIO (OVERLAY GLASSMORFISMO)
+   ═════════════════════════════════════════════════════════════════ */
 #ui-overlay {
   position: fixed;
   inset: 0;
   z-index: 10;
-  pointer-events: none; /* hijos activan según necesiten */
+  pointer-events: none;
 }
-#ui-overlay > * { pointer-events: all; }
 
-/* ══════════════════════════════════════════════
-   HEADER
-══════════════════════════════════════════════ */
-#header {
+#ui-overlay > * {
+  pointer-events: all;
+}
+
+/* ═════════════════════════════════════════════════════════════════
+   1. BARRA LATERAL IZQUIERDA (TARJETAS SEPARADAS ELEGANTEMENTE)
+   ═════════════════════════════════════════════════════════════════ */
+.left-sidebar-group {
   position: absolute;
-  top: 0; left: 0; right: 0;
-  padding: 18px 24px;
+  top: 24px;
+  left: 24px;
+  z-index: 25;
+  display: flex;
+  flex-direction: column;
+  gap: 22px; /* Separación clara y amplia entre ambas secciones */
+  width: 220px;
+}
+
+/* ── Tarjeta Superior: Residencial Santa Anita ── */
+#project-card {
+  position: relative;
+  width: 100%;
+  padding: 16px 20px;
+  background: var(--grey-glass-card);
+  backdrop-filter: var(--apple-glass-blur);
+  -webkit-backdrop-filter: var(--apple-glass-blur);
+  border: 1px solid var(--grey-glass-border);
+  border-radius: 22px;
+  box-shadow: var(--grey-glass-shadow);
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.project-card-header {
+  display: flex;
+  flex-direction: column;
+}
+
+.project-card-subtitle {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-white-muted);
+  letter-spacing: 0.2px;
+}
+
+.project-card-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.15;
+  margin: 1px 0 8px 0;
+  letter-spacing: -0.01em;
+}
+
+.project-card-location {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.location-pin-svg {
+  color: rgba(255, 255, 255, 0.9);
+  flex-shrink: 0;
+}
+
+.location-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.location-city {
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+.location-details {
+  font-size: 11.5px;
+  font-weight: 400;
+  color: var(--text-white-muted);
+  line-height: 1.2;
+}
+
+/* ═════════════════════════════════════════════════════════════════
+   2. TARJETA LATERAL IZQUIERDA: ESTADÍSTICAS Y FILTROS
+   ═════════════════════════════════════════════════════════════════ */
+#stats-card {
+  position: relative;
+  width: 100%;
+  padding: 14px 14px;
+  background: var(--grey-glass-card);
+  backdrop-filter: var(--apple-glass-blur);
+  -webkit-backdrop-filter: var(--apple-glass-blur);
+  border: 1px solid var(--grey-glass-border);
+  border-radius: 22px;
+  box-shadow: var(--grey-glass-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 10px;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: background 0.24s ease, transform 0.2s ease, border-color 0.24s ease;
+}
+
+/* Resaltar Lotes Totales en píldora interior como en el diseño */
+#stat-total {
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  padding: 8px 10px;
+  margin-bottom: 2px;
+}
+
+#stat-total:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.stat-item:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateX(3px);
+}
+
+.stat-item.active {
+  background: rgba(255, 255, 255, 0.20);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.30);
+}
+
+.stat-icon-wrap {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.85);
+  flex-shrink: 0;
+}
+
+/* Esferas luminosas 3D */
+.stat-glow-orb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-item:hover .stat-glow-orb {
+  transform: scale(1.12);
+}
+
+.orb-green {
+  background: radial-gradient(circle at 35% 35%, #86efac 0%, #22c55e 60%, #15803d 100%);
+  box-shadow: 0 0 14px rgba(34, 197, 94, 0.85), inset 0 1px 1px rgba(255, 255, 255, 0.7);
+}
+
+.orb-yellow {
+  background: radial-gradient(circle at 35% 35%, #fef08a 0%, #f59e0b 60%, #b45309 100%);
+  box-shadow: 0 0 14px rgba(245, 158, 11, 0.85), inset 0 1px 1px rgba(255, 255, 255, 0.7);
+}
+
+.orb-red {
+  background: radial-gradient(circle at 35% 35%, #fca5a5 0%, #ef4444 60%, #b91c1c 100%);
+  box-shadow: 0 0 14px rgba(239, 68, 68, 0.85), inset 0 1px 1px rgba(255, 255, 255, 0.7);
+}
+
+.stat-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-value {
+  font-size: 16.5px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.15;
+}
+
+.stat-text {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-white-muted);
+  line-height: 1.15;
+}
+
+/* ═════════════════════════════════════════════════════════════════
+   3. BRÚJULA Y CONTROLES DE ZOOM (INFERIOR IZQUIERDA)
+   ═════════════════════════════════════════════════════════════════ */
+#nav-controls {
+  position: absolute;
+  bottom: 24px;
+  left: 24px;
+  z-index: 25;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Botón de Brújula */
+.compass-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+}
+
+.compass-btn:hover {
+  transform: scale(1.10);
+}
+
+.compass-btn:active {
+  transform: scale(0.96);
+}
+
+.compass-dial {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.12s ease-out;
+}
+
+/* Píldora de Zoom (+ / -) Apple Style */
+.zoom-pill-controls {
+  background: var(--apple-glass-bg);
+  backdrop-filter: var(--apple-glass-blur);
+  -webkit-backdrop-filter: var(--apple-glass-blur);
+  border: 1px solid var(--apple-glass-border);
+  border-radius: 16px;
+  box-shadow: var(--apple-glass-shadow);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.zoom-pill-controls:hover {
+  border-color: var(--apple-glass-border-hov);
+}
+
+.zoom-pill-btn {
+  width: 40px;
+  height: 38px;
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.zoom-pill-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.zoom-pill-btn:active {
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.zoom-pill-divider {
+  width: 24px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+/* ═════════════════════════════════════════════════════════════════
+   4. DROPDOWN DE MANZANAS (SUPERIOR CENTRO — APPLE STYLE HERO CTA)
+   ═════════════════════════════════════════════════════════════════ */
+#manzana-dropdown-wrap {
+  position: absolute;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 40;
+}
+
+/* Botón disparador con el estilo idéntico al .hero-cta-btn */
+.manzana-trigger-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.62rem 1.4rem;
+  background: var(--apple-glass-bg); /* Sleek white/grey frosted glass */
+  backdrop-filter: var(--apple-glass-blur);
+  -webkit-backdrop-filter: var(--apple-glass-blur);
+  border: 1px solid var(--apple-glass-border);
+  border-radius: 100px; /* Perfect pill shape */
+  color: #ffffff;
+  font-family: var(--font-family);
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: var(--apple-glass-shadow);
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+  white-space: nowrap;
+}
+
+.manzana-trigger-btn:hover {
+  background: var(--apple-glass-hover);
+  border-color: var(--apple-glass-border-hov);
+  box-shadow: var(--apple-glass-shadow-hov);
+  transform: translateY(-1px);
+}
+
+.manzana-trigger-btn:active,
+.manzana-trigger-btn.open {
+  background: var(--apple-glass-active);
+  border-color: rgba(255, 255, 255, 0.6);
+  transform: translateY(0);
+}
+
+.dropdown-chevron-icon {
+  opacity: 0.85;
+  transition: transform 0.24s ease;
+}
+
+.manzana-trigger-btn.open .dropdown-chevron-icon {
+  transform: rotate(180deg);
+}
+
+/* Menú flotante del Dropdown en Vidrio Gris Neutro */
+.manzana-menu-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 175px;
+  max-height: 380px;
+  background: var(--grey-glass-solid);
+  backdrop-filter: var(--apple-glass-blur);
+  -webkit-backdrop-filter: var(--apple-glass-blur);
+  border: 1px solid var(--grey-glass-border);
+  border-radius: 18px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.40), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  padding: 6px;
+  animation: dropDownAnim 0.18s cubic-bezier(0.16, 1, 0.3, 1) both;
+  overflow-y: auto;
+}
+
+.manzana-menu-dropdown.hidden {
+  display: none;
+}
+
+@keyframes dropDownAnim {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-8px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+}
+
+.manzana-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.manzana-item-btn {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  background: linear-gradient(180deg, rgba(10,15,35,0.95) 0%, rgba(10,15,35,0) 100%);
-  pointer-events: none;
-  z-index: 20;
-}
-
-.header-left {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.project-name {
-  font-size: 1.2rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
-}
-.project-name span { color: var(--accent-light); }
-
-.project-badge {
-  display: inline-block;
-  padding: 3px 10px;
-  background: rgba(59,130,246,0.12);
-  border: 1px solid rgba(59,130,246,0.25);
-  border-radius: var(--r-pill);
-  font-size: 0.7rem;
-  color: #93c5fd;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  width: fit-content;
-}
-
-/* Stats chips */
-.header-stats {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-.stat-chip {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  padding: 6px 14px;
-  background: var(--bg-panel);
-  backdrop-filter: var(--blur);
-  -webkit-backdrop-filter: var(--blur);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--r-pill);
-  font-size: 0.78rem;
-  color: var(--text-2);
-  user-select: none;
-}
-.stat-chip strong {
-  font-size: 1rem;
-  font-weight: 800;
-  color: var(--text);
-  min-width: 16px;
-  text-align: center;
-}
-.chip-dot {
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-.stat-chip.disponible .chip-dot { background: var(--green);  box-shadow: 0 0 8px var(--green); }
-.stat-chip.reservado  .chip-dot { background: var(--amber);  box-shadow: 0 0 8px var(--amber); }
-.stat-chip.vendido    .chip-dot { background: var(--red);    box-shadow: 0 0 8px var(--red);   }
-
-/* ══════════════════════════════════════════════
-   BARRA DE CONTROLES / FILTROS
-══════════════════════════════════════════════ */
-#controls-bar {
-  position: absolute;
-  top: 80px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  padding: 5px;
-  background: var(--bg-panel);
-  backdrop-filter: var(--blur);
-  -webkit-backdrop-filter: var(--blur);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--r-pill);
-  box-shadow: var(--shadow-sm);
-  white-space: nowrap;
-  z-index: 20;
-}
-
-.ctrl-btn {
-  padding: 7px 18px;
-  border-radius: var(--r-pill);
-  border: none;
+  width: 100%;
+  padding: 7px 12px;
   background: transparent;
-  color: var(--text-2);
-  font-family: var(--font);
-  font-size: 0.8rem;
+  border: none;
+  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.88);
+  font-family: var(--font-family);
+  font-size: 13.5px;
   font-weight: 500;
+  text-align: left;
   cursor: pointer;
-  transition: background 0.18s, color 0.18s;
-}
-.ctrl-btn:hover   { background: rgba(255,255,255,0.06); color: var(--text); }
-.ctrl-btn.active  { background: var(--accent); color: #fff; font-weight: 600; }
-.ctrl-btn.icon    { padding: 7px 13px; font-size: 1rem; }
-
-.ctrl-divider {
-  width: 1px; height: 20px;
-  background: var(--glass-border);
-  margin: 0 2px;
+  transition: background 0.18s ease, color 0.18s ease;
 }
 
-/* ══════════════════════════════════════════════
-   LEYENDA
-══════════════════════════════════════════════ */
-#legend {
+.manzana-item-btn:hover {
+  background: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+}
+
+.manzana-item-btn.selected {
+  background: rgba(255, 255, 255, 0.22);
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.check-icon {
+  color: #ffffff;
+  font-size: 14px;
+}
+
+/* ═════════════════════════════════════════════════════════════════
+   5. BARRA DOCK INFERIOR (HERRAMIENTAS CENTRADAS — APPLE STYLE)
+   ═════════════════════════════════════════════════════════════════ */
+#bottom-dock-nav {
   position: absolute;
-  bottom: 20px;
+  bottom: 24px;
   left: 50%;
   transform: translateX(-50%);
-  display: flex;
-  gap: 20px;
-  padding: 8px 22px;
-  background: var(--bg-panel);
-  backdrop-filter: var(--blur);
-  -webkit-backdrop-filter: var(--blur);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--r-pill);
-  box-shadow: var(--shadow-sm);
-  z-index: 20;
-  pointer-events: none;
+  z-index: 25;
 }
-.legend-item {
+
+.bottom-dock-bar {
   display: flex;
   align-items: center;
-  gap: 7px;
-  font-size: 0.78rem;
-  color: var(--text-2);
-  font-weight: 500;
-}
-.legend-dot {
-  width: 10px; height: 10px;
-  border-radius: 50%;
-  background: var(--c);
-  box-shadow: 0 0 8px var(--c);
-}
-
-/* ══════════════════════════════════════════════
-   MONITOR DE RENDIMIENTO
-══════════════════════════════════════════════ */
-#perf-monitor {
-  position: absolute;
-  bottom: 20px;
-  left: 20px;
-  display: flex;
-  gap: 12px;
-  padding: 6px 14px;
-  background: var(--bg-panel);
-  backdrop-filter: var(--blur);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--r-sm);
-  font-size: 0.68rem;
-  color: var(--text-3);
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.05em;
-  pointer-events: none;
-  z-index: 20;
+  gap: 8px;
+  padding: 6px 12px;
+  background: var(--grey-glass-card);
+  backdrop-filter: var(--apple-glass-blur);
+  -webkit-backdrop-filter: var(--apple-glass-blur);
+  border: 1px solid var(--grey-glass-border);
+  border-radius: 100px;
+  box-shadow: var(--grey-glass-shadow);
+  transition: background 0.3s ease, border-color 0.3s ease;
 }
 
-/* ══════════════════════════════════════════════
-   TOOLTIP RÁPIDO (hover)
-══════════════════════════════════════════════ */
-#tooltip {
-  position: fixed;
-  z-index: 50;
-  padding: 9px 14px;
-  background: var(--bg-panel);
-  backdrop-filter: var(--blur);
-  -webkit-backdrop-filter: var(--blur);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--r-sm);
-  box-shadow: var(--shadow-sm);
-  pointer-events: none;
+.dock-action-btn {
   display: flex;
   flex-direction: column;
-  gap: 3px;
-  transition: opacity 0.12s;
-  min-width: 140px;
+  align-items: center;
+  gap: 5px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 30px;
+  transition: transform 0.2s ease;
 }
-#tooltip.hidden { opacity: 0; }
 
-.tt-title  { font-size: 0.8rem;  font-weight: 700; color: var(--text); }
-.tt-sub    { font-size: 0.72rem; color: var(--text-2); }
-.tt-price  { font-size: 0.78rem; font-weight: 600; color: var(--accent-light); }
+.dock-action-btn:hover {
+  transform: translateY(-2px);
+}
 
-/* ══════════════════════════════════════════════
-   PANEL DE LOTE (click)
-══════════════════════════════════════════════ */
+.dock-icon-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.88);
+  background: var(--apple-glass-bg);
+  backdrop-filter: var(--apple-glass-blur);
+  -webkit-backdrop-filter: var(--apple-glass-blur);
+  border: 1px solid var(--apple-glass-border);
+  transition: all 0.25s ease;
+}
+
+.dock-action-btn:hover .dock-icon-circle {
+  background: var(--apple-glass-hover);
+  border-color: var(--apple-glass-border-hov);
+  color: #ffffff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+/* Botón Activo en Vidrio Frosted Brillante (Estilo Apple limpio sin azul) */
+.dock-action-btn.active .dock-icon-circle {
+  background: var(--apple-glass-active);
+  border-color: rgba(255, 255, 255, 0.70);
+  color: #ffffff;
+  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.40);
+}
+
+.dock-emoji-icon {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.dock-chip-label {
+  font-family: var(--font-family);
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.88);
+  background: rgba(20, 24, 32, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 100px;
+  padding: 2px 8px;
+  white-space: nowrap;
+  letter-spacing: 0.1px;
+}
+
+/* ═════════════════════════════════════════════════════════════════
+   6. PANEL LATERAL DERECHO: DETALLES DEL LOTE (BLANCO GLASS)
+   ═════════════════════════════════════════════════════════════════ */
 #lot-panel {
   position: absolute;
   top: 50%;
   right: 24px;
   transform: translateY(-50%) translateX(0);
-  width: 310px;
-  background: var(--bg-panel);
-  backdrop-filter: var(--blur);
-  -webkit-backdrop-filter: var(--blur);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--r);
-  box-shadow: var(--shadow);
-  overflow: hidden;
-  transition: opacity 0.32s cubic-bezier(.4,0,.2,1),
-              transform 0.32s cubic-bezier(.4,0,.2,1);
-  z-index: 30;
+  width: 315px;
+  max-height: 90vh;
+  background: var(--light-glass-card);
+  backdrop-filter: var(--apple-glass-blur);
+  -webkit-backdrop-filter: var(--apple-glass-blur);
+  border: 1.5px solid var(--light-glass-border);
+  border-radius: 26px;
+  box-shadow: var(--light-glass-shadow);
+  padding: 14px;
+  color: var(--text-dark);
+  z-index: 35;
+  overflow-y: auto;
+  transition: opacity 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
 #lot-panel.hidden {
   opacity: 0;
-  transform: translateY(-50%) translateX(20px);
+  transform: translateY(-50%) translateX(30px);
   pointer-events: none;
 }
 
-/* Panel header */
-.panel-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 16px 20px;
-  border-bottom: 1px solid var(--glass-border);
-  background: rgba(255,255,255,0.02);
+/* Carrusel fotográfico */
+.lot-gallery-container {
+  position: relative;
+  width: 100%;
+  height: 165px;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #0f172a;
 }
-.panel-header-info {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-.panel-estado-badge {
-  display: inline-block;
-  padding: 2px 10px;
-  border-radius: var(--r-pill);
-  font-size: 0.66rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  width: fit-content;
-}
-.panel-estado-badge.disponible { background: rgba(34,197,94,.14);  border: 1px solid rgba(34,197,94,.3);  color: #4ade80; }
-.panel-estado-badge.reservado  { background: rgba(245,158,11,.14); border: 1px solid rgba(245,158,11,.3); color: #fbbf24; }
-.panel-estado-badge.vendido    { background: rgba(239,68,68,.14);  border: 1px solid rgba(239,68,68,.3);  color: #f87171; }
 
-.panel-codigo {
-  font-size: 1.1rem;
-  font-weight: 800;
-  letter-spacing: -0.01em;
+.gallery-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: opacity 0.24s ease;
 }
-.panel-close-btn {
-  width: 30px; height: 30px;
+
+.gallery-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
-  border: 1px solid var(--glass-border);
-  background: rgba(255,255,255,0.04);
-  color: var(--text-2);
-  cursor: pointer;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.78rem;
-  transition: background 0.18s, color 0.18s;
+  cursor: pointer;
+  color: #1e293b;
+  transition: all 0.2s ease;
+  z-index: 2;
+}
+
+.gallery-nav-btn:hover {
+  background: #ffffff;
+  transform: translateY(-50%) scale(1.08);
+}
+
+.gallery-nav-btn.prev {
+  left: 8px;
+}
+
+.gallery-nav-btn.next {
+  right: 8px;
+}
+
+.gallery-close-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #1e293b;
+  transition: all 0.2s ease;
+  z-index: 2;
+}
+
+.gallery-close-btn:hover {
+  background: #ffffff;
+  color: #ef4444;
+  transform: scale(1.08);
+}
+
+/* Cuerpo de la tarjeta del lote */
+.lot-card-body {
+  padding: 10px 4px 4px 4px;
+  display: flex;
+  flex-direction: column;
+}
+
+.lot-card-heading {
+  font-size: 20px;
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: -0.01em;
+  margin-bottom: 6px;
+}
+
+/* Badge de Estado */
+.lot-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 12px;
+  border-radius: 50px;
+  font-size: 12.5px;
+  font-weight: 700;
+  width: fit-content;
+  margin-bottom: 12px;
+}
+
+.lot-status-pill .status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.lot-status-pill.disponible {
+  background: rgba(34, 197, 94, 0.14);
+  color: #15803d;
+  border: 1px solid rgba(34, 197, 94, 0.28);
+}
+.lot-status-pill.disponible .status-dot {
+  background: var(--color-disponible);
+  box-shadow: 0 0 8px var(--color-disponible);
+}
+
+.lot-status-pill.reservado {
+  background: rgba(245, 158, 11, 0.14);
+  color: #b45309;
+  border: 1px solid rgba(245, 158, 11, 0.28);
+}
+.lot-status-pill.reservado .status-dot {
+  background: var(--color-reservado);
+  box-shadow: 0 0 8px var(--color-reservado);
+}
+
+.lot-status-pill.vendido {
+  background: rgba(239, 68, 68, 0.14);
+  color: #b91c1c;
+  border: 1px solid rgba(239, 68, 68, 0.28);
+}
+.lot-status-pill.vendido .status-dot {
+  background: var(--color-vendido);
+  box-shadow: 0 0 8px var(--color-vendido);
+}
+
+/* Lista de Especificaciones */
+.lot-specs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.lot-spec-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 0;
+}
+
+.spec-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-dark-muted);
+  font-size: 13.5px;
+  font-weight: 500;
+}
+
+.spec-icon {
+  color: #64748b;
   flex-shrink: 0;
 }
-.panel-close-btn:hover { background: rgba(255,255,255,0.1); color: var(--text); }
 
-/* Panel body */
-.panel-body {
-  padding: 18px 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-.panel-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 13px;
-}
-.panel-field {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-.field-label {
-  font-size: 0.65rem;
+.spec-value {
+  font-size: 14.5px;
   font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-3);
+  color: #0f172a;
 }
-.field-val {
-  font-size: 0.95rem;
+
+.price-row .spec-left {
+  color: #0f172a;
   font-weight: 600;
-  color: var(--text);
 }
 
-/* Price box */
-.panel-price-box {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 14px 16px;
-  background: rgba(59,130,246,0.07);
-  border: 1px solid rgba(59,130,246,0.18);
-  border-radius: var(--r-sm);
+.price-row .spec-icon {
+  color: #0f172a;
 }
-.price-tag {
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #93c5fd;
-}
-.price-amount {
-  font-size: 1.6rem;
+
+.price-text {
+  font-size: 17px;
   font-weight: 800;
-  letter-spacing: -0.03em;
-  color: var(--accent-light);
-  line-height: 1.1;
-}
-.price-m2 {
-  font-size: 0.72rem;
-  color: var(--text-3);
+  color: #0f172a;
+  letter-spacing: -0.01em;
 }
 
-/* Vías */
-.panel-vias-section {
+/* Botones de Acción — Apple Style Elegante */
+.lot-card-actions {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
-.panel-vias-tags {
+
+.btn-separar-lote {
+  width: 100%;
+  padding: 12px;
+  border-radius: 100px;
+  background: #0f172a;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  font-family: var(--font-family);
+  font-size: 14.5px;
+  font-weight: 600;
   display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-}
-.via-tag {
-  padding: 3px 10px;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--r-pill);
-  font-size: 0.7rem;
-  color: var(--text-2);
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Botón contactar */
-.btn-contactar {
+.btn-separar-lote:hover {
+  background: #1e293b;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.35);
+}
+
+.btn-separar-lote:active {
+  transform: translateY(0);
+}
+
+.btn-ver-manzana {
   width: 100%;
-  padding: 13px;
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-  border: none;
-  border-radius: var(--r-sm);
-  color: #fff;
-  font-family: var(--font);
-  font-size: 0.85rem;
+  padding: 10px;
+  border-radius: 100px;
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.10);
+  color: #1e293b;
+  font-family: var(--font-family);
+  font-size: 13.5px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: all 0.22s ease;
+}
+
+.btn-ver-manzana:hover {
+  background: rgba(0, 0, 0, 0.09);
+  border-color: rgba(0, 0, 0, 0.18);
+  transform: translateY(-1px);
+}
+
+/* Detalles Técnicos Plegables */
+.lot-tech-details {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  font-size: 12px;
+}
+
+.lot-tech-details summary {
+  color: #64748b;
+  font-size: 11px;
   font-weight: 600;
   cursor: pointer;
-  letter-spacing: 0.01em;
-  transition: filter 0.2s, transform 0.18s, box-shadow 0.2s;
+  user-select: none;
+  outline: none;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
-.btn-contactar:hover {
-  filter: brightness(1.12);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(59,130,246,0.35);
-}
-.btn-contactar:active { transform: translateY(0); }
 
-/* ══════════════════════════════════════════════
-   TEMA CLARO / MODO DÍA
-══════════════════════════════════════════════ */
-body.light-mode #header {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 100%);
-}
-body.light-mode .project-name {
-  color: #0f172a;
-}
-body.light-mode .project-badge {
-  background: rgba(37, 99, 235, 0.12);
-  border-color: rgba(37, 99, 235, 0.28);
-  color: #1d4ed8;
-}
-body.light-mode .stat-chip {
-  background: rgba(255, 255, 255, 0.92);
-  border-color: rgba(0, 0, 0, 0.08);
-  color: #475569;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-}
-body.light-mode .stat-chip strong {
-  color: #0f172a;
-}
-body.light-mode #controls-bar {
-  background: rgba(255, 255, 255, 0.92);
-  border-color: rgba(0, 0, 0, 0.1);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-}
-body.light-mode .ctrl-btn:not(.active) {
-  color: #475569;
-}
-body.light-mode .ctrl-btn:not(.active):hover {
-  background: rgba(0, 0, 0, 0.05);
-  color: #0f172a;
-}
-body.light-mode .ctrl-divider {
-  background: rgba(0, 0, 0, 0.1);
-}
-body.light-mode #legend {
-  background: rgba(255, 255, 255, 0.92);
-  border-color: rgba(0, 0, 0, 0.1);
+.tech-coords-info {
+  margin-top: 6px;
+  font-family: monospace;
+  font-size: 11px;
   color: #334155;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
-}
-body.light-mode #perf-monitor {
-  background: rgba(255, 255, 255, 0.9);
-  border-color: rgba(0, 0, 0, 0.1);
-  color: #475569;
-}
-body.light-mode #lot-panel {
-  background: rgba(255, 255, 255, 0.96);
-  border-color: rgba(0, 0, 0, 0.1);
-  color: #1e293b;
-  box-shadow: -8px 0 32px rgba(0, 0, 0, 0.12);
-}
-body.light-mode .panel-codigo {
-  color: #0f172a;
-}
-body.light-mode .panel-close-btn {
-  color: #64748b;
-  background: rgba(0, 0, 0, 0.04);
-}
-body.light-mode .panel-close-btn:hover {
-  background: rgba(0, 0, 0, 0.08);
-  color: #0f172a;
-}
-body.light-mode .field-label {
-  color: #64748b;
-}
-body.light-mode .field-val {
-  color: #0f172a;
-}
-body.light-mode .panel-price-box {
-  background: rgba(241, 245, 249, 0.9);
-  border-color: rgba(0, 0, 0, 0.06);
-}
-body.light-mode .price-tag {
-  color: #64748b;
-}
-body.light-mode .price-amount {
-  color: #0f172a;
-}
-body.light-mode .price-m2 {
-  color: #64748b;
-}
-body.light-mode .via-tag {
-  background: rgba(0, 0, 0, 0.04);
-  border-color: rgba(0, 0, 0, 0.08);
-  color: #475569;
-}
-body.light-mode #tooltip {
-  background: rgba(255, 255, 255, 0.96);
-  border-color: rgba(0, 0, 0, 0.12);
-  color: #0f172a;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
-}
-body.light-mode .tt-title {
-  color: #0f172a;
-}
-body.light-mode .tt-sub {
-  color: #64748b;
+  line-height: 1.4;
+  background: rgba(0, 0, 0, 0.03);
+  padding: 6px 8px;
+  border-radius: 6px;
 }
 
+.tech-vias-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 6px;
+}
+
+.tech-via-badge {
+  background: rgba(0, 0, 0, 0.05);
+  padding: 2px 7px;
+  border-radius: 12px;
+  font-size: 10px;
+  color: #475569;
+}
+
+/* ═════════════════════════════════════════════════════════════════
+   7. MONITOR DE RENDIMIENTO (FPS)
+   ═════════════════════════════════════════════════════════════════ */
+#perf-monitor {
+  position: absolute;
+  bottom: 24px;
+  left: 96px;
+  display: flex;
+  gap: 12px;
+  padding: 6px 14px;
+  background: var(--grey-glass-card);
+  backdrop-filter: var(--apple-glass-blur);
+  -webkit-backdrop-filter: var(--apple-glass-blur);
+  border: 1px solid var(--grey-glass-border);
+  border-radius: 50px;
+  font-size: 0.68rem;
+  color: rgba(255, 255, 255, 0.70);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  pointer-events: none;
+  z-index: 20;
+}
+
+/* ═════════════════════════════════════════════════════════════════
+   8. TOOLTIP CONTEXTUAL (HOVER RÁPIDO)
+   ═════════════════════════════════════════════════════════════════ */
+#tooltip {
+  position: fixed;
+  z-index: 100;
+  padding: 8px 14px;
+  background: var(--grey-glass-solid);
+  backdrop-filter: var(--apple-glass-blur);
+  -webkit-backdrop-filter: var(--apple-glass-blur);
+  border: 1px solid var(--grey-glass-border);
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  transition: opacity 0.12s ease;
+  min-width: 140px;
+}
+
+#tooltip.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.tt-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.tt-sub {
+  font-size: 0.74rem;
+  color: var(--text-white-muted);
+}
+
+.tt-price {
+  font-size: 0.80rem;
+  font-weight: 700;
+  color: #f1f5f9;
+}

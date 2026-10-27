@@ -15,13 +15,13 @@ export function updateTerrainDayNight(isNight) {
   if (isNight) {
     if (_groundMat)       _groundMat.color.setHex(0x0f1810);
     if (_asphaltMat)      _asphaltMat.color.setHex(0x19202a);
-    if (_satRegionalMesh) _satRegionalMesh.material.opacity = 0.55;
-    if (_satDetailMesh)   _satDetailMesh.material.opacity   = 0.55;
+    if (_satRegionalMesh) _satRegionalMesh.material.color.setHex(0x556677);
+    if (_satDetailMesh)   _satDetailMesh.material.color.setHex(0x556677);
   } else {
     if (_groundMat)       _groundMat.color.setHex(0x1a2e1d); // Verde bosque profundo que armoniza con la selva
     if (_asphaltMat)      _asphaltMat.color.setHex(0x525e70);
-    if (_satRegionalMesh) _satRegionalMesh.material.opacity = 0.98;
-    if (_satDetailMesh)   _satDetailMesh.material.opacity   = 0.98;
+    if (_satRegionalMesh) _satRegionalMesh.material.color.setHex(0xffffff);
+    if (_satDetailMesh)   _satDetailMesh.material.color.setHex(0xffffff);
   }
 }
 
@@ -43,6 +43,7 @@ export function createTerrain(bounds, infra = {}) {
   ground.rotation.x = -Math.PI / 2;
   ground.position.y = -0.06;
   ground.receiveShadow = true;
+  ground.renderOrder = 0;
   scene.add(ground);
 
   const textureLoader = new THREE.TextureLoader();
@@ -55,13 +56,15 @@ export function createTerrain(bounds, infra = {}) {
     const regGeo = new THREE.PlaneGeometry(3040.7, 3040.7);
     const regMat = new THREE.MeshBasicMaterial({
       map: regTex,
-      transparent: true,
-      opacity: 0.98
+      transparent: false,
+      depthWrite: true,
+      depthTest: true
     });
     _satRegionalMesh = new THREE.Mesh(regGeo, regMat);
     _satRegionalMesh.rotation.x = -Math.PI / 2;
     _satRegionalMesh.position.set(10.76, 0.005, -6.37);
     _satRegionalMesh.receiveShadow = true;
+    _satRegionalMesh.renderOrder = 0;
     _satRegionalMesh.name = 'satelite_regional_3km';
     scene.add(_satRegionalMesh);
   });
@@ -74,13 +77,15 @@ export function createTerrain(bounds, infra = {}) {
     const detGeo = new THREE.PlaneGeometry(760.18, 760.18);
     const detMat = new THREE.MeshBasicMaterial({
       map: detTex,
-      transparent: true,
-      opacity: 0.98
+      transparent: false,
+      depthWrite: true,
+      depthTest: true
     });
     _satDetailMesh = new THREE.Mesh(detGeo, detMat);
     _satDetailMesh.rotation.x = -Math.PI / 2;
     _satDetailMesh.position.set(10.76, 0.012, -6.37);
     _satDetailMesh.receiveShadow = true;
+    _satDetailMesh.renderOrder = 1;
     _satDetailMesh.name = 'satelite_detalle_lotes';
     scene.add(_satDetailMesh);
   });

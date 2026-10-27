@@ -125,6 +125,74 @@ export function focusOnManzana(mz) {
 
 export const getControls = () => _controls;
 
+/**
+ * Acerca la cámara hacia el objetivo
+ */
+export function zoomIn() {
+  if (!_controls) return;
+  const camera = getCamera();
+  const tx = _controls.target.x;
+  const ty = _controls.target.y;
+  const tz = _controls.target.z;
+
+  const dx = camera.position.x - tx;
+  const dy = camera.position.y - ty;
+  const dz = camera.position.z - tz;
+
+  const factor = 0.72;
+  const curDist = Math.hypot(dx, dy, dz);
+  if (curDist * factor < (_controls.minDistance || 5)) return;
+
+  animateCameraTo(
+    { x: tx + dx * factor, y: ty + dy * factor, z: tz + dz * factor },
+    { x: tx, y: ty, z: tz }
+  );
+}
+
+/**
+ * Aleja la cámara del objetivo
+ */
+export function zoomOut() {
+  if (!_controls) return;
+  const camera = getCamera();
+  const tx = _controls.target.x;
+  const ty = _controls.target.y;
+  const tz = _controls.target.z;
+
+  const dx = camera.position.x - tx;
+  const dy = camera.position.y - ty;
+  const dz = camera.position.z - tz;
+
+  const factor = 1.38;
+  const curDist = Math.hypot(dx, dy, dz);
+  if (curDist * factor > (_controls.maxDistance || 850)) return;
+
+  animateCameraTo(
+    { x: tx + dx * factor, y: ty + dy * factor, z: tz + dz * factor },
+    { x: tx, y: ty, z: tz }
+  );
+}
+
+/**
+ * Orienta la cámara alineada al Norte (Sur mirando al Norte)
+ */
+export function alignNorth() {
+  if (!_controls) return;
+  const camera = getCamera();
+  const tx = _controls.target.x;
+  const ty = _controls.target.y;
+  const tz = _controls.target.z;
+
+  const dx = camera.position.x - tx;
+  const dz = camera.position.z - tz;
+  const distXZ = Math.max(Math.hypot(dx, dz), 60);
+
+  animateCameraTo(
+    { x: tx, y: camera.position.y, z: tz + distXZ },
+    { x: tx, y: ty, z: tz }
+  );
+}
+
 let _isTourMode = false;
 export function toggleTourMode() {
   _isTourMode = !_isTourMode;

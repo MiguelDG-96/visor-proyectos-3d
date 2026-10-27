@@ -215,7 +215,8 @@ function _getLabelMaterial(num) {
   const mat = new THREE.SpriteMaterial({
     map: tex,
     transparent: true,
-    depthTest: false
+    depthTest: false,
+    depthWrite: false
   });
   _labelMatCache.set(key, mat);
   return mat;
@@ -228,6 +229,7 @@ function _makeLabel(num) {
   const spr = new THREE.Sprite(_getLabelMaterial(num));
   spr.scale.set(3.6, 3.6, 1);
   spr.position.set(0, LOT_HEIGHT + 0.8, 0);
+  spr.renderOrder = 500;
   _labelMeshes.push(spr);
   return spr;
 }
@@ -258,19 +260,87 @@ export function filterLots(filter) {
   });
 }
 
+// Marcador 3D de selección flotante (Pin estilo Apple con centro blanco)
+let _selectionMarker = null;
+let _selectedLotMesh = null;
+
+function _ensureSelectionMarker() {
+  if (_selectionMarker) return _selectionMarker;
+  const sz = 128;
+  const cv = document.createElement('canvas');
+  cv.width = cv.height = sz;
+  const ctx = cv.getContext('2d');
+
+  // Sombra exterior suave
+  ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+  ctx.shadowBlur = 12;
+
+  // Pin gota moderna en grafito elegante (#0f172a)
+  ctx.fillStyle = '#0f172a';
+  ctx.beginPath();
+  ctx.arc(sz / 2, sz * 0.38, sz * 0.32, Math.PI * 0.8, Math.PI * 0.2, true);
+  ctx.lineTo(sz / 2, sz * 0.94);
+  ctx.closePath();
+  ctx.fill();
+
+  // Borde blanco nítido
+  ctx.shadowBlur = 0;
+  ctx.strokeStyle = '#ffffff';
+  ctx.lineWidth = 4.5;
+  ctx.stroke();
+
+  // Círculo interior blanco
+  ctx.fillStyle = '#ffffff';
+  ctx.beginPath();
+  ctx.arc(sz / 2, sz * 0.38, sz * 0.12, 0, Math.PI * 2);
+  ctx.fill();
+
+  const tex = new THREE.CanvasTexture(cv);
+  tex.minFilter = THREE.LinearFilter;
+  const mat = new THREE.SpriteMaterial({
+    map: tex,
+    transparent: true,
+    depthTest: false
+  });
+
+  _selectionMarker = new THREE.Sprite(mat);
+  _selectionMarker.scale.set(7.5, 7.5, 1);
+  _selectionMarker.visible = false;
+  _selectionMarker.renderOrder = 9999;
+
+  const scene = getScene();
+  if (scene) scene.add(_selectionMarker);
+
+  return _selectionMarker;
+}
+
 export function setLotHovered(mesh, hovered) {
   if (!mesh?.userData?.type || mesh.userData._isSelected) return;
   mesh.userData.targetY = hovered ? mesh.userData.baseY + 1.2 : mesh.userData.baseY;
   mesh.userData.targetEmissive = hovered ? 0.30 : 0;
+  mesh.userData.emissiveColorHex = 0xffffff;
   _activeAnimatingMeshes.add(mesh);
 }
 
 export function setLotSelected(mesh, selected) {
   if (!mesh?.userData) return;
   mesh.userData._isSelected = selected;
-  mesh.userData.targetY = selected ? mesh.userData.baseY + 2.8 : mesh.userData.baseY;
-  mesh.userData.targetEmissive = selected ? 0.65 : 0;
+  mesh.userData.targetY = selected ? mesh.userData.baseY + 2.4 : mesh.userData.baseY;
+  mesh.userData.targetEmissive = selected ? 0.80 : 0;
+  mesh.userData.emissiveColorHex = 0xffffff;
   _activeAnimatingMeshes.add(mesh);
+
+  const marker = _ensureSelectionMarker();
+  if (selected) {
+    _selectedLotMesh = mesh;
+    marker.position.set(mesh.position.x, mesh.userData.baseY + LOT_HEIGHT + 5.5, mesh.position.z);
+    marker.visible = true;
+  } else {
+    if (_selectedLotMesh === mesh) {
+      _selectedLotMesh = null;
+      marker.visible = false;
+    }
+  }
 }
 
 /**
@@ -278,6 +348,12 @@ export function setLotSelected(mesh, selected) {
  * @returns {boolean} true si hubo animación activa en este frame
  */
 export function animateLots() {
+  // Animación flotante del pin de selección si está visible
+  if (_selectionMarker && _selectionMarker.visible && _selectedLotMesh) {
+    const floatOffset = Math.sin(performance.now() * 0.005) * 0.45;
+    _selectionMarker.position.y = _selectedLotMesh.position.y + LOT_HEIGHT + 5.5 + floatOffset;
+  }
+
   if (_activeAnimatingMeshes.size === 0) return false;
   const lf = 0.15;
   for (const mesh of _activeAnimatingMeshes) {
@@ -292,7 +368,8 @@ export function animateLots() {
     const de = mesh.userData.targetEmissive - mesh.material.emissiveIntensity;
     if (Math.abs(de) > 0.005) {
       mesh.material.emissiveIntensity += de * lf;
-      mesh.material.emissive.setHex(0xffffff);
+      const hex = mesh.userData.emissiveColorHex || 0xffffff;
+      mesh.material.emissive.setHex(hex);
       stillMoving = true;
     } else {
       mesh.material.emissiveIntensity = mesh.userData.targetEmissive;

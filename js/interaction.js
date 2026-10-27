@@ -33,6 +33,15 @@ export function setupInteraction() {
     const t = e.changedTouches[0];
     _onClick({ clientX: t.clientX, clientY: t.clientY });
   }, { passive: true });
+
+  // Escuchar evento de deselección desde botón cerrar del panel
+  window.addEventListener('deselectLot', () => {
+    if (_selectedMesh) {
+      setLotSelected(_selectedMesh, false);
+      _selectedMesh = null;
+      requestShadowUpdate();
+    }
+  });
 }
 
 /** Para actualizar el hover cuando la cámara se mueve (con WASD) sin mover el ratón */

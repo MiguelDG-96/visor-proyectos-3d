@@ -6,10 +6,10 @@ import { initScene, getScene, getCamera, getRenderer } from './scene.js';
 import { setupCamera, getControls, resetCamera, toggleTourMode, isCameraAnimating } from './camera.js';
 import { setupLighting, toggleDayNight }               from './lighting.js';
 import { createTerrain, toggleSatelliteLayer }         from './terrain.js';
-import { createAllManzanas, filterLots, animateLots, updateLabelLOD } from './lots.js';
+import { createAllManzanas, filterLots, animateLots, updateLabelLOD, getLotMeshes, setLotSelected } from './lots.js';
 import { initManzanas, animateManzanaPins, updateManzanaPinsLOD } from './manzanas.js';
 import { setupInteraction, updateInteraction }           from './interaction.js';
-import { initUI, updateStats }                         from './ui.js';
+import { initUI, updateStats, updateCompass, showLotPanel } from './ui.js';
 import { initPerformance, tickPerformance }            from './performance.js';
 import { initWalkMode, enableWalkMode, isWalkModeActive, updateWalkMode } from './walk.js';
 
@@ -109,14 +109,15 @@ async function main() {
     window.addEventListener('toggleDayNight', () => {
       const isNight = toggleDayNight();
       const btn = $('btn-day-night');
+      const icon = $('day-night-icon');
       if (btn) {
         if (isNight) {
           btn.classList.add('active');
-          btn.textContent = '☀️'; // Cambia ícono a sol
+          if (icon) icon.textContent = '☀️';
           document.body.classList.remove('light-mode');
         } else {
           btn.classList.remove('active');
-          btn.textContent = '🌙'; // Cambia ícono a luna
+          if (icon) icon.textContent = '🌙';
           document.body.classList.add('light-mode');
         }
       }
@@ -136,6 +137,13 @@ async function main() {
     setProgress(100, '¡Listo!');
     await _wait(350);
     _fadeOutLoader();
+
+    // 9.5 Seleccionar lote inicial de muestra (Lote 12 - Mz. F) como en el diseño de referencia
+    const initialLot = getLotMeshes().find(m => m.userData?.lot?.codigo === 'MZ-F-L-12');
+    if (initialLot) {
+      setLotSelected(initialLot, true);
+      showLotPanel(initialLot.userData.lot);
+    }
 
     // 10. Loop de render
     _startRenderLoop();
@@ -179,6 +187,7 @@ function _startRenderLoop() {
       const controls = getControls();
       if (controls) {
         controls.update();
+        updateCompass(controls.getAzimuthalAngle());
       }
     }
 
