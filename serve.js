@@ -2,6 +2,35 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
+// Cargar variables de entorno desde .env si existe (compatible con cualquier versión de Node)
+const envPath = path.join(__dirname, '.env');
+if (fs.existsSync(envPath)) {
+  if (typeof process.loadEnvFile === 'function') {
+    try {
+      process.loadEnvFile(envPath);
+    } catch (_) {}
+  }
+  // Respaldo manual en caso de Node < 20.12 o variables pendientes
+  try {
+    const envLines = fs.readFileSync(envPath, 'utf-8').split(/\r?\n/);
+    for (const line of envLines) {
+      const trimmed = line.trim();
+      if (!trimmed || trimmed.startsWith('#')) continue;
+      const eqIdx = trimmed.indexOf('=');
+      if (eqIdx !== -1) {
+        const key = trimmed.slice(0, eqIdx).trim();
+        let val = trimmed.slice(eqIdx + 1).trim();
+        if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
+          val = val.slice(1, -1);
+        }
+        if (!process.env[key]) {
+          process.env[key] = val;
+        }
+      }
+    }
+  } catch (_) {}
+}
+
 const PORT = process.env.PORT || 5174;
 const MIME = {
   '.html': 'text/html; charset=utf-8',
@@ -16,7 +45,10 @@ const MIME = {
 };
 
 // Configuración de Google Map Tiles API (2D Tiles) y Caché Local en Disco
-const GOOGLE_API_KEY = 'AIzaSyAVzwsDud9KBe2tFFo4RoIG5enfmHJU_LI';
+const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY || '';
+if (!GOOGLE_API_KEY) {
+  console.warn('\x1b[33m%s\x1b[0m', '[AVISO] GOOGLE_API_KEY no encontrada en .env. Configure su clave en el archivo .env');
+}
 const CACHE_DIR = path.join(__dirname, 'assets', 'tiles_cache');
 if (!fs.existsSync(CACHE_DIR)) {
   fs.mkdirSync(CACHE_DIR, { recursive: true });
